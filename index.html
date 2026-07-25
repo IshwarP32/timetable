@@ -1085,19 +1085,33 @@
       }
     }
 
-    // Preferences & LocalStorage
+    // Preferences, LocalStorage & URL Hash Sync
     function loadSavedConfig() {
+      // 1. Check URL Hash parameters first (e.g. #sec=A&el1=ECN17254&el2=ECN17276)
+      const hash = window.location.hash.substring(1);
+      let hasHashParams = false;
+      if (hash) {
+        const params = new URLSearchParams(hash);
+        if (params.has('sec')) { userSection = params.get('sec'); hasHashParams = true; }
+        if (params.has('el1')) { userEl1 = params.get('el1'); hasHashParams = true; }
+        if (params.has('el2')) { userEl2 = params.get('el2'); hasHashParams = true; }
+        if (params.has('theme')) document.documentElement.setAttribute('data-theme', params.get('theme'));
+      }
+
+      // 2. Fallback to localStorage
       const s = localStorage.getItem('tt_section');
       const e1 = localStorage.getItem('tt_el1');
       const e2 = localStorage.getItem('tt_el2');
       const t = localStorage.getItem('tt_theme');
 
-      if (s) userSection = s;
-      if (e1) userEl1 = e1;
-      if (e2) userEl2 = e2;
+      if (!hasHashParams) {
+        if (s) userSection = s;
+        if (e1) userEl1 = e1;
+        if (e2) userEl2 = e2;
+      }
       if (t) document.documentElement.setAttribute('data-theme', t);
 
-      if (!s || !e1 || !e2) {
+      if (!hasHashParams && (!s || !e1 || !e2)) {
         openConfigModal();
       }
     }
@@ -1106,6 +1120,11 @@
       localStorage.setItem('tt_section', userSection);
       localStorage.setItem('tt_el1', userEl1);
       localStorage.setItem('tt_el2', userEl2);
+
+      // Sync choices to URL Hash so bookmarks and offline downloaded pages retain choices
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      window.location.hash = `sec=${userSection}&el1=${userEl1}&el2=${userEl2}&theme=${currentTheme}`;
+
       closeConfigModal();
       renderApp();
     }
