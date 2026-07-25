@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Timetable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ══════════════════════════════════════
+       COLOR SYSTEM
+    ══════════════════════════════════════ */
+    :root {
+      /* Subject accent colors */
+      --clr-awc: #818cf8;    /* Adv. Wireless Comm - Indigo */
+      --clr-nano: #34d399;   /* Nano Elec - Emerald */
+      --clr-mwc: #f472b6;    /* Mobile & Wireless - Pink */
+      --clr-emic: #fb923c;   /* EM Interference - Orange */
+    }
+
+    [data-theme="dark"] {
+      --bg-base: #0a0a12;
+      --bg-surface: rgba(255,255,255,0.04);
+      --bg-elevated: rgba(255,255,255,0.06);
+      --bg-glass: rgba(255,255,255,0.05);
+      --glass-border: rgba(255,255,255,0.08);
+      --glass-border-hover: rgba(255,255,255,0.14);
+      --text-1: #f0f0f8;
+      --text-2: #a0a0b8;
+      --text-3: #585870;
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.3), 0 1px 4px rgba(0,0,0,0.2);
+      --shadow-cell: 0 1px 8px rgba(0,0,0,0.15);
+      --tutorial-bg: rgba(251,191,36,0.08);
+      --tutorial-border: rgba(251,191,36,0.35);
+      --tutorial-text: #fbbf24;
+      --lunch-bg: rgba(255,255,255,0.02);
+      --lunch-text: #3a3a4e;
+      --day-cell-bg: rgba(255,255,255,0.03);
+      --thead-bg: rgba(255,255,255,0.03);
+      --toggle-bg: rgba(255,255,255,0.08);
+      --row-hover: rgba(255,255,255,0.02);
+      --glow-opacity: 0.15;
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f2f2f7;
+      --bg-surface: rgba(255,255,255,0.75);
+      --bg-elevated: rgba(255,255,255,0.85);
+      --bg-glass: rgba(255,255,255,0.65);
+      --glass-border: rgba(0,0,0,0.08);
+      --glass-border-hover: rgba(0,0,0,0.14);
+      --text-1: #1a1a2e;
+      --text-2: #6b6b82;
+      --text-3: #aaaabe;
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+      --shadow-cell: 0 1px 4px rgba(0,0,0,0.04);
+      --tutorial-bg: rgba(251,191,36,0.1);
+      --tutorial-border: rgba(217,119,6,0.4);
+      --tutorial-text: #b45309;
+      --lunch-bg: rgba(0,0,0,0.02);
+      --lunch-text: #c8c8d8;
+      --day-cell-bg: rgba(0,0,0,0.02);
+      --thead-bg: rgba(0,0,0,0.02);
+      --toggle-bg: rgba(0,0,0,0.06);
+      --row-hover: rgba(0,0,0,0.02);
+      --glow-opacity: 0.08;
+    }
+
+    /* ══════════════════════════════════════
+       BASE
+    ══════════════════════════════════════ */
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 32px;
+      position: relative;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.4s ease;
+    }
+
+    /* Animated mesh gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(129,140,248,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(244,114,182,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(52,211,153,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 30%, rgba(251,146,60,0.06) 0%, transparent 50%);
+      animation: meshMove 20s ease-in-out infinite alternate;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes meshMove {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(2%, -1%) rotate(1deg); }
+      66% { transform: translate(-1%, 2%) rotate(-1deg); }
+      100% { transform: translate(1%, -2%) rotate(0.5deg); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════ */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      background: linear-gradient(135deg, var(--clr-awc), var(--clr-mwc));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: var(--text-2);
+      letter-spacing: 0.2px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+    }
+
+    .dot-lec { background: var(--bg-elevated); border: 1px solid var(--glass-border); }
+    .dot-tut { background: var(--tutorial-bg); border: 1px solid var(--tutorial-border); }
+    .dot-lunch { background: var(--lunch-bg); border: 1px solid var(--glass-border); }
+
+    /* ══════════════════════════════════════
+       THEME TOGGLE
+    ══════════════════════════════════════ */
+    .theme-toggle {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: var(--toggle-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--glass-border-hover);
+      transform: scale(1.08);
+    }
+
+    /* ══════════════════════════════════════
+       TIMETABLE CARD
+    ══════════════════════════════════════ */
+    .timetable-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+    }
+
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    /* ── Table Header ── */
+    .timetable thead th {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-3);
+      padding: 11px 4px;
+      background: var(--thead-bg);
+      border-bottom: 1px solid var(--glass-border);
+      text-align: center;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    .timetable thead th:first-child {
+      width: 84px;
+      border-right: 1px solid var(--glass-border);
+    }
+
+    .lunch-col-header {
+      color: var(--lunch-text) !important;
+    }
+
+    /* ── Cells ── */
+    .timetable td {
+      text-align: center;
+      vertical-align: middle;
+      padding: 6px 5px;
+      border-bottom: 1px solid var(--glass-border);
+      border-right: 1px solid var(--glass-border);
+      height: 64px;
+      position: relative;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .timetable tr:last-child td { border-bottom: none; }
+    .timetable td:last-child { border-right: none; }
+
+    /* ── Day Column ── */
+    .day-cell {
+      border-right: 1px solid var(--glass-border) !important;
+      background: var(--day-cell-bg);
+      padding: 0 !important;
+      transition: background 0.4s;
+    }
+
+    .day-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .day-cell:hover .day-pill {
+      transform: scale(1.06);
+    }
+
+    .day-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .day-text {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-1);
+    }
+
+    .day-mon .day-dot { background: var(--clr-awc); color: var(--clr-awc); }
+    .day-tue .day-dot { background: var(--clr-emic); color: var(--clr-emic); }
+    .day-wed .day-dot { background: var(--clr-nano); color: var(--clr-nano); }
+    .day-thu .day-dot { background: var(--clr-mwc); color: var(--clr-mwc); }
+    .day-fri .day-dot { background: #a78bfa; color: #a78bfa; }
+
+    /* ── Subject Content ── */
+    .cell-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .subject-name {
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: var(--text-1);
+      line-height: 1.25;
+      margin-bottom: 2px;
+      transition: color 0.3s;
+    }
+
+    .subject-loc {
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    /* Subject-specific accent colors */
+    .subj-awc .subject-loc { color: var(--clr-awc); }
+    .subj-nano .subject-loc { color: var(--clr-nano); }
+    .subj-mwc .subject-loc { color: var(--clr-mwc); }
+    .subj-emic .subject-loc { color: var(--clr-emic); }
+
+    /* Glow on hover for subject cells */
+    .subj-cell {
+      cursor: default;
+      overflow: hidden;
+    }
+
+    .subj-cell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 0;
+      z-index: 0;
+    }
+
+    .subj-awc::before { background: radial-gradient(circle at center, rgba(129,140,248,var(--glow-opacity)) 0%, transparent 70%); }
+    .subj-nano::before { background: radial-gradient(circle at center, rgba(52,211,153,var(--glow-opacity)) 0%, transparent 70%); }
+    .subj-mwc::before { background: radial-gradient(circle at center, rgba(244,114,182,var(--glow-opacity)) 0%, transparent 70%); }
+    .subj-emic::before { background: radial-gradient(circle at center, rgba(251,146,60,var(--glow-opacity)) 0%, transparent 70%); }
+
+    .subj-cell:hover::before {
+      opacity: 1;
+    }
+
+    .subj-cell:hover {
+      transform: scale(1.02);
+      z-index: 2;
+    }
+
+    /* Left accent bar */
+    .subj-cell::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 20%;
+      bottom: 20%;
+      width: 2.5px;
+      border-radius: 0 2px 2px 0;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .subj-awc::after { background: var(--clr-awc); }
+    .subj-nano::after { background: var(--clr-nano); }
+    .subj-mwc::after { background: var(--clr-mwc); }
+    .subj-emic::after { background: var(--clr-emic); }
+
+    .subj-cell:hover::after {
+      opacity: 1;
+    }
+
+    /* ── Tutorial ── */
+    .tutorial-cell {
+      background: var(--tutorial-bg);
+      border-left: 2.5px solid var(--tutorial-border) !important;
+    }
+
+    .tutorial-cell .subject-name {
+      color: var(--tutorial-text);
+    }
+
+    .tutorial-cell .subject-loc {
+      color: var(--tutorial-text);
+      opacity: 0.7;
+    }
+
+    .tut-badge {
+      display: inline-block;
+      font-size: 0.42rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--tutorial-text);
+      background: rgba(251,191,36,0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+    }
+
+    .tutorial-cell::before {
+      background: radial-gradient(circle at center, rgba(251,191,36,var(--glow-opacity)) 0%, transparent 70%);
+    }
+
+    .tutorial-cell::after {
+      display: none;
+    }
+
+    /* ── Empty ── */
+    .empty-cell {
+      background: transparent;
+    }
+
+    /* Subtle dot pattern in empty cells */
+    .empty-cell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--text-3) 0.5px, transparent 0.5px);
+      background-size: 12px 12px;
+      opacity: 0.15;
+    }
+
+    .empty-cell::after { display: none; }
+
+    /* ── Lunch ── */
+    .lunch-cell {
+      background: var(--lunch-bg);
+    }
+
+    .lunch-cell::before,
+    .lunch-cell::after { display: none !important; }
+
+    .lunch-label {
+      font-size: 0.48rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--lunch-text);
+    }
+
+    /* ── Row hover ── */
+    .timetable tbody tr:hover > td {
+      background-color: var(--row-hover);
+    }
+
+    .timetable tbody tr:hover .lunch-cell {
+      background: var(--lunch-bg);
+    }
+
+    .timetable tbody tr:hover .tutorial-cell {
+      background: var(--tutorial-bg);
+    }
+
+    /* ══════════════════════════════════════
+       SUBJECT DETAILS
+    ══════════════════════════════════════ */
+    .details-section {
+      margin-top: 18px;
+    }
+
+    .details-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    .details-title {
+      padding: 10px 18px;
+      background: var(--thead-bg);
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--text-1);
+      letter-spacing: -0.2px;
+    }
+
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .details-table thead th {
+      font-size: 0.55rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-3);
+      padding: 8px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .details-table tbody td {
+      font-size: 0.7rem;
+      font-weight: 450;
+      color: var(--text-1);
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--glass-border);
+      text-align: left;
+      transition: background 0.2s;
+    }
+
+    .details-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .details-table tbody tr:hover td {
+      background: var(--row-hover);
+    }
+
+    /* Subject name with accent dot */
+    .detail-subject {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .detail-dot-mwc { background: var(--clr-mwc); box-shadow: 0 0 6px var(--clr-mwc); }
+    .detail-dot-nano { background: var(--clr-nano); box-shadow: 0 0 6px var(--clr-nano); }
+    .detail-dot-awc { background: var(--clr-awc); box-shadow: 0 0 6px var(--clr-awc); }
+    .detail-dot-emic { background: var(--clr-emic); box-shadow: 0 0 6px var(--clr-emic); }
+
+    .code-val {
+      font-weight: 700;
+      font-size: 0.66rem;
+      letter-spacing: 0.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .code-mwc { color: var(--clr-mwc); }
+    .code-nano { color: var(--clr-nano); }
+    .code-awc { color: var(--clr-awc); }
+    .code-emic { color: var(--clr-emic); }
+
+    .prof-val {
+      color: var(--text-2);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.56rem;
+      color: var(--text-3);
+      font-weight: 400;
+    }
+
+    /* ══════════════════════════════════════
+       TRANSITIONS & PRINT
+    ══════════════════════════════════════ */
+    * {
+      transition-property: background, background-color, border-color, color, box-shadow;
+      transition-duration: 0.35s;
+      transition-timing-function: ease;
+    }
+
+    /* Don't transition layout properties */
+    .subj-cell, .day-pill, .theme-toggle {
+      transition: all 0.3s ease;
+    }
+
+    @media print {
+      body { background: #fff; padding: 16px; }
+      body::before { display: none; }
+      .theme-toggle { display: none; }
+      .subj-cell::before, .empty-cell::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Weekly Timetable</h1>
+      <div class="header-right">
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot dot-lec"></div>Lecture</div>
+          <div class="legend-item"><div class="legend-dot dot-tut"></div>Tutorial</div>
+          <div class="legend-item"><div class="legend-dot dot-lunch"></div>Lunch</div>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+      </div>
+    </div>
+
+    <!-- Timetable -->
+    <div class="timetable-card">
+      <table class="timetable">
+        <thead>
+          <tr>
+            <th></th>
+            <th>8 – 9</th>
+            <th>9 – 10</th>
+            <th>10 – 11</th>
+            <th>11 – 12</th>
+            <th class="lunch-col-header">12 – 1</th>
+            <th>1 – 2</th>
+            <th>2 – 3</th>
+            <th>3 – 4</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ═══ MONDAY ═══ -->
+          <tr>
+            <td class="day-cell day-mon">
+              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Mon</span></div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="subj-cell subj-awc">
+              <div class="cell-content">
+                <div class="subject-name">Adv. Wireless Comm.</div>
+                <div class="subject-loc">SEW7</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
+            <td class="subj-cell subj-nano">
+              <div class="cell-content">
+                <div class="subject-name">Nano Elec</div>
+                <div class="subject-loc">FN4</div>
+              </div>
+            </td>
+            <td class="subj-cell subj-mwc">
+              <div class="cell-content">
+                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
+                <div class="subject-loc">FN4</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+          </tr>
+
+          <!-- ═══ TUESDAY ═══ -->
+          <tr>
+            <td class="day-cell day-tue">
+              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Tue</span></div>
+            </td>
+            <td class="subj-cell subj-awc">
+              <div class="cell-content">
+                <div class="subject-name">Adv. Wireless Comm.</div>
+                <div class="subject-loc">SEW10</div>
+              </div>
+            </td>
+            <td class="subj-cell subj-nano">
+              <div class="cell-content">
+                <div class="subject-name">Nano Elec</div>
+                <div class="subject-loc">SEW10</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
+            <td class="empty-cell"></td>
+            <td class="subj-cell subj-emic">
+              <div class="cell-content">
+                <div class="subject-name">EM Interference &amp; Compatibility</div>
+                <div class="subject-loc">FE16</div>
+              </div>
+            </td>
+            <td class="subj-cell subj-mwc">
+              <div class="cell-content">
+                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
+                <div class="subject-loc">FE16</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ═══ WEDNESDAY ═══ -->
+          <tr>
+            <td class="day-cell day-wed">
+              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Wed</span></div>
+            </td>
+            <td class="subj-cell subj-awc">
+              <div class="cell-content">
+                <div class="subject-name">Adv. Wireless Comm.</div>
+                <div class="subject-loc">FE16</div>
+              </div>
+            </td>
+            <td class="subj-cell tutorial-cell">
+              <div class="cell-content">
+                <span class="tut-badge">Tutorial</span>
+                <div class="subject-name">Nano Elec</div>
+                <div class="subject-loc">FEW1</div>
+              </div>
+            </td>
+            <td class="subj-cell subj-emic">
+              <div class="cell-content">
+                <div class="subject-name">EM Interference &amp; Compatibility</div>
+                <div class="subject-loc">FE16</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
+            <td class="subj-cell subj-mwc">
+              <div class="cell-content">
+                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
+                <div class="subject-loc">GS7</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+          </tr>
+
+          <!-- ═══ THURSDAY ═══ -->
+          <tr>
+            <td class="day-cell day-thu">
+              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Thu</span></div>
+            </td>
+            <td class="subj-cell tutorial-cell">
+              <div class="cell-content">
+                <span class="tut-badge">Tutorial</span>
+                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
+                <div class="subject-loc">FEW15</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+          </tr>
+
+          <!-- ═══ FRIDAY ═══ -->
+          <tr>
+            <td class="day-cell day-fri">
+              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Fri</span></div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
+            <td class="subj-cell subj-emic">
+              <div class="cell-content">
+                <div class="subject-name">EM Interference &amp; Compatibility</div>
+                <div class="subject-loc">FE18</div>
+              </div>
+            </td>
+            <td class="empty-cell"></td>
+            <td class="empty-cell"></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Subject Details -->
+    <div class="details-section">
+      <div class="details-card">
+        <div class="details-title">Subject Details</div>
+        <table class="details-table">
+          <thead>
+            <tr>
+              <th style="width:45%">Subject</th>
+              <th style="width:25%">Code</th>
+              <th>Professor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="detail-subject"><span class="detail-dot detail-dot-mwc"></span>Mobile and Wireless Communication</div></td>
+              <td class="code-val code-mwc">ECN17101</td>
+              <td class="prof-val">—</td>
+            </tr>
+            <tr>
+              <td><div class="detail-subject"><span class="detail-dot detail-dot-nano"></span>Nano Electronics and Its Applications</div></td>
+              <td class="code-val code-nano">ECN17102</td>
+              <td class="prof-val">—</td>
+            </tr>
+            <tr>
+              <td><div class="detail-subject"><span class="detail-dot detail-dot-awc"></span>Advanced Wireless Communication</div></td>
+              <td class="code-val code-awc">ECN17251</td>
+              <td class="prof-val">—</td>
+            </tr>
+            <tr>
+              <td><div class="detail-subject"><span class="detail-dot detail-dot-emic"></span>Electromagnetic Interference &amp; Compatibility</div></td>
+              <td class="code-val code-emic">ECN17276</td>
+              <td class="prof-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer">Updated · July 2026</div>
+
+  </div>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Load saved preference (default: dark)
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') {
+      html.setAttribute('data-theme', 'light');
+      toggle.textContent = '🌙';
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      toggle.textContent = '☀️';
+    }
+
+    toggle.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.setAttribute('data-theme', 'light');
+        toggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        toggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  </script>
+</body>
+</html>
