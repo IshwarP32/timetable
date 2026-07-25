@@ -476,6 +476,18 @@
       border-radius: 4px;
     }
 
+    .timeline-elec-badge {
+      font-size: 0.52rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: rgba(139, 92, 246, 0.2);
+      color: #a78bfa;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
     .timeline-card.is-tutorial {
       background: var(--tutorial-bg);
       border-color: var(--tutorial-border);
@@ -579,6 +591,7 @@
 
     .dot-lec-icon { background: var(--bg-elevated); border: 1px solid var(--glass-border-hover); }
     .dot-tut-icon { background: var(--tutorial-bg); border: 1px solid var(--tutorial-border); }
+    .dot-elec-icon { background: rgba(139, 92, 246, 0.25); border: 1px solid #8b5cf6; }
     .dot-lunch-icon { background: var(--lunch-bg); border: 1px solid var(--glass-border); }
 
     .timetable-card {
@@ -688,6 +701,20 @@
       display: inline-block;
       margin-bottom: 3px;
       letter-spacing: 0.8px;
+    }
+
+    .grid-elec-tag {
+      font-size: 0.45rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: rgba(139, 92, 246, 0.25);
+      color: #a78bfa;
+      padding: 1px 5px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 3px;
+      letter-spacing: 0.8px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
     }
 
     /* Per-Subject Background Tints & Left Borders */
@@ -1067,6 +1094,7 @@
       <div class="desktop-legend">
         <div class="legend-items">
           <div class="legend-tag"><div class="legend-dot-icon dot-lec-icon"></div>Lecture</div>
+          <div class="legend-tag"><div class="legend-dot-icon dot-elec-icon"></div>Elective</div>
           <div class="legend-tag"><div class="legend-dot-icon dot-tut-icon"></div>Tutorial (T)</div>
           <div class="legend-tag"><div class="legend-dot-icon dot-lunch-icon"></div>Lunch</div>
         </div>
@@ -1411,7 +1439,8 @@
               merged[d][slot] = {
                 code: opt1.code,
                 name: opt1.name,
-                loc: opt1.schedule[d][slot].loc
+                loc: opt1.schedule[d][slot].loc,
+                isElective: true
               };
             });
           }
@@ -1427,7 +1456,8 @@
               merged[d][slot] = {
                 code: opt2.code,
                 name: opt2.name,
-                loc: opt2.schedule[d][slot].loc
+                loc: opt2.schedule[d][slot].loc,
+                isElective: true
               };
             });
           }
@@ -1501,6 +1531,7 @@
         if (slotData) {
           hasClass = true;
           const isTut = slotData.isTutorial;
+          const isElec = slotData.isElective;
           const subjClr = `var(--clr-${slotData.code.toLowerCase()}, #6366f1)`;
 
           container.innerHTML += `
@@ -1514,6 +1545,7 @@
                 </div>
                 <div class="timeline-card-footer">
                   <span class="code-pill">${slotData.code}</span>
+                  ${isElec ? '<span class="timeline-elec-badge">Elective</span>' : ''}
                   ${isTut ? '<span class="timeline-tut-badge">Tutorial</span>' : ''}
                 </div>
               </div>
@@ -1574,8 +1606,10 @@
           const slotData = schedule[dayKey][slot];
           if (slotData) {
             const isTut = slotData.isTutorial;
+            const isElec = slotData.isElective;
             rowHtml += `
               <td class="cell-${slotData.code} ${isTut ? 'cell-tutorial' : ''}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}')">
+                ${isElec ? '<span class="grid-elec-tag">Elective</span>' : ''}
                 ${isTut ? '<span class="grid-tut-tag">Tutorial</span>' : ''}
                 <div class="grid-subject-name">${slotData.name}</div>
                 <div class="grid-subject-loc">📍 ${slotData.loc}</div>
@@ -1650,7 +1684,22 @@
     // Subject Modal Logic
     function openSubjectModal(code, loc) {
       const sub = APP_DATA.subjects[code] || { name: code, profA: '—', profB: '—' };
-      const prof = userSection === 'A' ? sub.profA : sub.profB;
+      
+      const isEl1 = APP_DATA.electives && APP_DATA.electives.group1 ? APP_DATA.electives.group1.options.some(o => o.code === code || o.id === code) : false;
+      const isEl2 = APP_DATA.electives && APP_DATA.electives.group2 ? APP_DATA.electives.group2.options.some(o => o.code === code || o.id === code) : false;
+      const isElective = isEl1 || isEl2;
+
+      const sectionText = isElective ? 'Section A & B' : `Section ${userSection}`;
+      let prof = '—';
+      if (isElective) {
+        if (sub.profA && sub.profB && sub.profA !== sub.profB && sub.profA !== '—' && sub.profB !== '—') {
+          prof = `${sub.profA} / ${sub.profB}`;
+        } else {
+          prof = (sub.profA && sub.profA !== '—') ? sub.profA : (sub.profB || '—');
+        }
+      } else {
+        prof = userSection === 'A' ? sub.profA : sub.profB;
+      }
 
       const content = document.getElementById('subjectModalContent');
       content.innerHTML = `
@@ -1664,7 +1713,7 @@
         </div>
         <div class="info-row">
           <span class="info-key">Section</span>
-          <span class="info-val">Section ${userSection}</span>
+          <span class="info-val">${sectionText}</span>
         </div>
         <div class="info-row">
           <span class="info-key">Professor</span>
