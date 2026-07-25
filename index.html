@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weekly Timetable</title>
+  <title>University Timetable</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- html2canvas for PNG Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -15,104 +18,90 @@
     }
 
     /* ══════════════════════════════════════
-       COLOR SYSTEM
+       COLOR SYSTEM & THEMES
     ══════════════════════════════════════ */
     :root {
-      /* Subject accent colors */
-      --clr-awc: #818cf8;    /* Adv. Wireless Comm - Indigo */
-      --clr-nano: #34d399;   /* Nano Elec - Emerald */
-      --clr-mwc: #f472b6;    /* Mobile & Wireless - Pink */
-      --clr-emic: #fb923c;   /* EM Interference - Orange */
+      --clr-ecn17101: #6366f1; /* Mobile & Wireless - Indigo */
+      --clr-ecn17102: #10b981; /* Nano Elec - Emerald */
+      --clr-ecn17254: #ec4899; /* Mixed Mode VLSI - Pink */
+      --clr-ecn17251: #8b5cf6; /* Adv. Wireless - Purple */
+      --clr-ecn17256: #3b82f6; /* Memory Design - Blue */
+      --clr-ecn17276: #f97316; /* EM Interference - Orange */
+      --clr-ecn17278: #06b6d4; /* Signal Compression - Cyan */
+      --clr-ecn17280: #eab308; /* Organic Elec - Yellow */
     }
 
     [data-theme="dark"] {
-      --bg-base: #0a0a12;
-      --bg-surface: rgba(255,255,255,0.04);
-      --bg-elevated: rgba(255,255,255,0.06);
-      --bg-glass: rgba(255,255,255,0.05);
-      --glass-border: rgba(255,255,255,0.08);
-      --glass-border-hover: rgba(255,255,255,0.14);
-      --text-1: #f0f0f8;
-      --text-2: #a0a0b8;
-      --text-3: #585870;
-      --shadow-card: 0 4px 24px rgba(0,0,0,0.3), 0 1px 4px rgba(0,0,0,0.2);
-      --shadow-cell: 0 1px 8px rgba(0,0,0,0.15);
-      --tutorial-bg: rgba(251,191,36,0.08);
-      --tutorial-border: rgba(251,191,36,0.35);
+      --bg-base: #09090e;
+      --bg-glass: rgba(255, 255, 255, 0.04);
+      --bg-elevated: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-hover: rgba(255, 255, 255, 0.18);
+      --text-1: #f3f3fb;
+      --text-2: #9e9eb4;
+      --text-3: #5a5a72;
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+      --tutorial-bg: rgba(245, 158, 11, 0.1);
+      --tutorial-border: rgba(245, 158, 11, 0.4);
       --tutorial-text: #fbbf24;
-      --lunch-bg: rgba(255,255,255,0.02);
-      --lunch-text: #3a3a4e;
-      --day-cell-bg: rgba(255,255,255,0.03);
-      --thead-bg: rgba(255,255,255,0.03);
-      --toggle-bg: rgba(255,255,255,0.08);
-      --row-hover: rgba(255,255,255,0.02);
-      --glow-opacity: 0.15;
+      --lunch-bg: rgba(255, 255, 255, 0.02);
+      --lunch-text: #45455a;
+      --thead-bg: rgba(255, 255, 255, 0.03);
+      --btn-bg: rgba(255, 255, 255, 0.08);
+      --glow-opacity: 0.18;
+      --modal-overlay: rgba(0, 0, 0, 0.7);
     }
 
     [data-theme="light"] {
-      --bg-base: #f2f2f7;
-      --bg-surface: rgba(255,255,255,0.75);
-      --bg-elevated: rgba(255,255,255,0.85);
-      --bg-glass: rgba(255,255,255,0.65);
-      --glass-border: rgba(0,0,0,0.08);
-      --glass-border-hover: rgba(0,0,0,0.14);
-      --text-1: #1a1a2e;
-      --text-2: #6b6b82;
-      --text-3: #aaaabe;
-      --shadow-card: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
-      --shadow-cell: 0 1px 4px rgba(0,0,0,0.04);
-      --tutorial-bg: rgba(251,191,36,0.1);
-      --tutorial-border: rgba(217,119,6,0.4);
+      --bg-base: #f0f2f5;
+      --bg-glass: rgba(255, 255, 255, 0.75);
+      --bg-elevated: rgba(255, 255, 255, 0.9);
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --glass-border-hover: rgba(0, 0, 0, 0.16);
+      --text-1: #181826;
+      --text-2: #62627a;
+      --text-3: #9494aa;
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+      --tutorial-bg: rgba(245, 158, 11, 0.12);
+      --tutorial-border: rgba(217, 119, 6, 0.45);
       --tutorial-text: #b45309;
-      --lunch-bg: rgba(0,0,0,0.02);
-      --lunch-text: #c8c8d8;
-      --day-cell-bg: rgba(0,0,0,0.02);
-      --thead-bg: rgba(0,0,0,0.02);
-      --toggle-bg: rgba(0,0,0,0.06);
-      --row-hover: rgba(0,0,0,0.02);
-      --glow-opacity: 0.08;
+      --lunch-bg: rgba(0, 0, 0, 0.03);
+      --lunch-text: #aaaaae;
+      --thead-bg: rgba(0, 0, 0, 0.025);
+      --btn-bg: rgba(0, 0, 0, 0.05);
+      --glow-opacity: 0.1;
+      --modal-overlay: rgba(0, 0, 0, 0.4);
     }
 
     /* ══════════════════════════════════════
-       BASE
+       GLOBAL LAYOUT
     ══════════════════════════════════════ */
     body {
-      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg-base);
       color: var(--text-1);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 28px 32px;
+      padding: 20px;
       position: relative;
       overflow-x: hidden;
-      transition: background 0.5s ease, color 0.4s ease;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* Animated mesh gradient background */
+    /* Dynamic mesh background */
     body::before {
       content: '';
       position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(129,140,248,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(244,114,182,0.10) 0%, transparent 50%),
-        radial-gradient(ellipse at 60% 80%, rgba(52,211,153,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 40% 30%, rgba(251,146,60,0.06) 0%, transparent 50%);
-      animation: meshMove 20s ease-in-out infinite alternate;
+        radial-gradient(ellipse at 15% 40%, rgba(99, 102, 241, 0.10) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 85%, rgba(16, 185, 129, 0.07) 0%, transparent 45%);
       z-index: 0;
       pointer-events: none;
-    }
-
-    @keyframes meshMove {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(2%, -1%) rotate(1deg); }
-      66% { transform: translate(-1%, 2%) rotate(-1deg); }
-      100% { transform: translate(1%, -2%) rotate(0.5deg); }
     }
 
     .container {
@@ -123,724 +112,1343 @@
     }
 
     /* ══════════════════════════════════════
-       HEADER
+       HEADER BAR & CONTROLS (Mobile Optimized)
     ══════════════════════════════════════ */
-    .header {
+    .top-header {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .top-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .app-title h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .config-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-2);
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      padding: 6px 14px;
+      border-radius: 12px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .config-badge span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .config-badge button {
+      background: none;
+      border: none;
+      color: #6366f1;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.72rem;
+      text-decoration: underline;
+      flex-shrink: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      padding: 8px 12px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: var(--btn-bg);
+      backdrop-filter: blur(12px);
+      color: var(--text-1);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+      .app-title h1 {
+        font-size: 1.15rem;
+      }
+
+      .icon-btn {
+        height: 34px;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+      }
+
+      .icon-btn.dl-btn .btn-text-full {
+        display: none;
+      }
+
+      .icon-btn.dl-btn::after {
+        content: 'Image';
+      }
+    }
+
+    /* ══════════════════════════════════════
+       VIEW TOGGLER (Today vs Full Week)
+    ══════════════════════════════════════ */
+    .view-switcher {
+      display: flex;
+      background: var(--bg-glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 3px;
       margin-bottom: 18px;
     }
 
-    .header h1 {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: -0.8px;
-      background: linear-gradient(135deg, var(--clr-awc), var(--clr-mwc));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .legend {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.58rem;
-      font-weight: 500;
+    .view-tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
       color: var(--text-2);
-      letter-spacing: 0.2px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
-    .legend-dot {
+    .view-tab.active {
+      background: var(--bg-elevated);
+      color: var(--text-1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* ══════════════════════════════════════
+       DAY TABS BAR & MOBILE VIEW
+    ══════════════════════════════════════ */
+    .today-view-container {
+      display: block;
+    }
+
+    .day-tabs-bar {
+      display: flex;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 4px;
+      margin-bottom: 14px;
+      gap: 4px;
+    }
+
+    .day-tab {
+      flex: 1;
+      text-align: center;
+      padding: 9px 4px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-2);
+      border-radius: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .day-tab.active {
+      background: var(--bg-elevated);
+      color: var(--text-1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .day-header-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding: 0 4px;
+    }
+
+    .day-header-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+    }
+
+    .day-header-subtitle {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+
+    /* ══════════════════════════════════════
+       COMPACT VERTICAL TIMELINE
+    ══════════════════════════════════════ */
+    /* ══════════════════════════════════════
+       COMPACT & UNIFORM VERTICAL TIMELINE
+    ══════════════════════════════════════ */
+    .timeline-container {
+      position: relative;
+      padding-left: 64px;
+    }
+
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      left: 68px;
+      top: 32px;
+      bottom: 32px;
+      width: 2px;
+      background: var(--glass-border);
+      border-radius: 1px;
+    }
+
+    .timeline-row {
+      position: relative;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      min-height: 64px;
+    }
+
+    .timeline-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-time-label {
+      position: absolute;
+      left: -64px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      text-align: right;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--text-3);
+      letter-spacing: -0.2px;
+    }
+
+    .timeline-node {
+      position: absolute;
+      left: 1px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 2px solid var(--glass-border);
+      z-index: 2;
+      transition: all 0.25s ease;
+    }
+
+    /* Common Card Dimensions for ALL Hour Blocks */
+    .timeline-card-base {
+      flex: 1;
+      min-height: 64px;
+      margin-left: 16px;
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      transition: all 0.22s ease;
+      box-sizing: border-box;
+    }
+
+    /* Subject / Class Card */
+    .timeline-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+    }
+
+    .timeline-card:hover {
+      transform: translateX(3px);
+      border-color: var(--glass-border-hover);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .timeline-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .timeline-subj-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-1);
+      line-height: 1.2;
+    }
+
+    .timeline-subj-loc {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .timeline-card-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .timeline-tut-badge {
+      font-size: 0.48rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: rgba(245,158,11,0.2);
+      color: var(--tutorial-text);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .timeline-card.is-tutorial {
+      background: var(--tutorial-bg);
+      border-color: var(--tutorial-border);
+    }
+
+    /* Lunch Card — Subtle Glassmorphism (Same 64px Height & Radius) */
+    .timeline-lunch-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1.5px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="light"] .timeline-lunch-card {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.035) 0%, rgba(0, 0, 0, 0.01) 100%);
+    }
+
+    .lunch-badge-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+
+    .lunch-icon {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* Free Slot Card (Same 64px Height & Radius) */
+    .timeline-free-card {
+      border: 1px dashed rgba(255,255,255,0.06);
+      background: transparent;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-3);
+      opacity: 0.5;
+      display: flex;
+      align-items: center;
+    }
+
+    .no-class-banner {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-glass);
+      border: 1px dashed var(--glass-border);
+      border-radius: 16px;
+      color: var(--text-2);
+      margin-left: 16px;
+    }
+
+    .no-class-banner h3 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: var(--text-1);
+    }
+
+    /* ══════════════════════════════════════
+       FULL WEEK GRID VIEW (Desktop Optimized)
+    ══════════════════════════════════════ */
+    .week-view-container {
+      display: none;
+    }
+
+    .desktop-legend {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .legend-items {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .legend-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+
+    .legend-dot-icon {
       width: 8px;
       height: 8px;
       border-radius: 3px;
     }
 
-    .dot-lec { background: var(--bg-elevated); border: 1px solid var(--glass-border); }
-    .dot-tut { background: var(--tutorial-bg); border: 1px solid var(--tutorial-border); }
-    .dot-lunch { background: var(--lunch-bg); border: 1px solid var(--glass-border); }
+    .dot-lec-icon { background: var(--bg-elevated); border: 1px solid var(--glass-border-hover); }
+    .dot-tut-icon { background: var(--tutorial-bg); border: 1px solid var(--tutorial-border); }
+    .dot-lunch-icon { background: var(--lunch-bg); border: 1px solid var(--glass-border); }
 
-    /* ══════════════════════════════════════
-       THEME TOGGLE
-    ══════════════════════════════════════ */
-    .theme-toggle {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      border: 1px solid var(--glass-border);
-      background: var(--toggle-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--glass-border-hover);
-      transform: scale(1.08);
-    }
-
-    /* ══════════════════════════════════════
-       TIMETABLE CARD
-    ══════════════════════════════════════ */
     .timetable-card {
       background: var(--bg-glass);
       backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
       box-shadow: var(--shadow-card);
-      overflow: hidden;
-      transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+      overflow-x: auto;
+      transition: background 0.4s, border-color 0.4s;
     }
 
     .timetable {
       width: 100%;
+      min-width: 820px;
       border-collapse: collapse;
       table-layout: fixed;
     }
 
-    /* ── Table Header ── */
     .timetable thead th {
-      font-size: 0.6rem;
-      font-weight: 700;
+      font-size: 0.65rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-3);
-      padding: 11px 4px;
+      padding: 12px 6px;
       background: var(--thead-bg);
       border-bottom: 1px solid var(--glass-border);
       text-align: center;
-      transition: background 0.4s, color 0.4s;
     }
 
     .timetable thead th:first-child {
-      width: 84px;
+      width: 90px;
       border-right: 1px solid var(--glass-border);
     }
 
-    .lunch-col-header {
-      color: var(--lunch-text) !important;
-    }
-
-    /* ── Cells ── */
     .timetable td {
       text-align: center;
       vertical-align: middle;
-      padding: 6px 5px;
+      padding: 8px 6px;
       border-bottom: 1px solid var(--glass-border);
       border-right: 1px solid var(--glass-border);
-      height: 64px;
+      height: 66px;
       position: relative;
-      transition: background 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+      transition: all 0.22s ease;
     }
 
     .timetable tr:last-child td { border-bottom: none; }
     .timetable td:last-child { border-right: none; }
 
-    /* ── Day Column ── */
+    /* Day Column Styling */
     .day-cell {
       border-right: 1px solid var(--glass-border) !important;
-      background: var(--day-cell-bg);
-      padding: 0 !important;
-      transition: background 0.4s;
+      background: var(--thead-bg);
+      cursor: default !important;
+      padding: 0 4px !important;
     }
 
-    .day-pill {
-      display: inline-flex;
+    .day-cell-inner {
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      padding: 5px 10px;
-      border-radius: 8px;
-      transition: transform 0.2s ease;
     }
 
-    .day-cell:hover .day-pill {
-      transform: scale(1.06);
-    }
-
-    .day-dot {
+    .day-dot-indicator {
       width: 7px;
       height: 7px;
       border-radius: 50%;
       flex-shrink: 0;
-      box-shadow: 0 0 6px currentColor;
     }
 
-    .day-text {
-      font-size: 0.65rem;
+    .day-text-label {
+      font-size: 0.7rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       color: var(--text-1);
     }
 
-    .day-mon .day-dot { background: var(--clr-awc); color: var(--clr-awc); }
-    .day-tue .day-dot { background: var(--clr-emic); color: var(--clr-emic); }
-    .day-wed .day-dot { background: var(--clr-nano); color: var(--clr-nano); }
-    .day-thu .day-dot { background: var(--clr-mwc); color: var(--clr-mwc); }
-    .day-fri .day-dot { background: #a78bfa; color: #a78bfa; }
-
-    /* ── Subject Content ── */
-    .cell-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .subject-name {
-      font-size: 0.64rem;
-      font-weight: 600;
-      color: var(--text-1);
+    /* Subject Cell Content */
+    .grid-subject-name {
+      font-size: 0.68rem;
+      font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 2px;
-      transition: color 0.3s;
-    }
-
-    .subject-loc {
-      font-size: 0.55rem;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-
-    /* Subject-specific accent colors */
-    .subj-awc .subject-loc { color: var(--clr-awc); }
-    .subj-nano .subject-loc { color: var(--clr-nano); }
-    .subj-mwc .subject-loc { color: var(--clr-mwc); }
-    .subj-emic .subject-loc { color: var(--clr-emic); }
-
-    /* Glow on hover for subject cells */
-    .subj-cell {
-      cursor: default;
-      overflow: hidden;
-    }
-
-    .subj-cell::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      border-radius: 0;
-      z-index: 0;
-    }
-
-    .subj-awc::before { background: radial-gradient(circle at center, rgba(129,140,248,var(--glow-opacity)) 0%, transparent 70%); }
-    .subj-nano::before { background: radial-gradient(circle at center, rgba(52,211,153,var(--glow-opacity)) 0%, transparent 70%); }
-    .subj-mwc::before { background: radial-gradient(circle at center, rgba(244,114,182,var(--glow-opacity)) 0%, transparent 70%); }
-    .subj-emic::before { background: radial-gradient(circle at center, rgba(251,146,60,var(--glow-opacity)) 0%, transparent 70%); }
-
-    .subj-cell:hover::before {
-      opacity: 1;
-    }
-
-    .subj-cell:hover {
-      transform: scale(1.02);
-      z-index: 2;
-    }
-
-    /* Left accent bar */
-    .subj-cell::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 20%;
-      bottom: 20%;
-      width: 2.5px;
-      border-radius: 0 2px 2px 0;
-      opacity: 0.7;
-      transition: opacity 0.3s;
-    }
-
-    .subj-awc::after { background: var(--clr-awc); }
-    .subj-nano::after { background: var(--clr-nano); }
-    .subj-mwc::after { background: var(--clr-mwc); }
-    .subj-emic::after { background: var(--clr-emic); }
-
-    .subj-cell:hover::after {
-      opacity: 1;
-    }
-
-    /* ── Tutorial ── */
-    .tutorial-cell {
-      background: var(--tutorial-bg);
-      border-left: 2.5px solid var(--tutorial-border) !important;
-    }
-
-    .tutorial-cell .subject-name {
-      color: var(--tutorial-text);
-    }
-
-    .tutorial-cell .subject-loc {
-      color: var(--tutorial-text);
-      opacity: 0.7;
-    }
-
-    .tut-badge {
-      display: inline-block;
-      font-size: 0.42rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--tutorial-text);
-      background: rgba(251,191,36,0.12);
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: var(--text-1);
       margin-bottom: 3px;
     }
 
-    .tutorial-cell::before {
-      background: radial-gradient(circle at center, rgba(251,191,36,var(--glow-opacity)) 0%, transparent 70%);
+    .grid-subject-loc {
+      font-size: 0.58rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.85;
     }
 
-    .tutorial-cell::after {
-      display: none;
+    .grid-tut-tag {
+      font-size: 0.45rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: rgba(245,158,11,0.2);
+      color: var(--tutorial-text);
+      padding: 1px 5px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 3px;
+      letter-spacing: 0.8px;
     }
 
-    /* ── Empty ── */
-    .empty-cell {
+    /* Per-Subject Background Tints & Left Borders */
+    .cell-ECN17101 { background: rgba(99, 102, 241, 0.07); border-left: 3.5px solid var(--clr-ecn17101); }
+    .cell-ECN17102 { background: rgba(16, 185, 129, 0.07); border-left: 3.5px solid var(--clr-ecn17102); }
+    .cell-ECN17254 { background: rgba(236, 72, 153, 0.07); border-left: 3.5px solid var(--clr-ecn17254); }
+    .cell-ECN17251 { background: rgba(139, 92, 246, 0.07); border-left: 3.5px solid var(--clr-ecn17251); }
+    .cell-ECN17256 { background: rgba(59, 130, 246, 0.07); border-left: 3.5px solid var(--clr-ecn17256); }
+    .cell-ECN17276 { background: rgba(249, 115, 22, 0.07); border-left: 3.5px solid var(--clr-ecn17276); }
+    .cell-ECN17278 { background: rgba(6, 182, 212, 0.07); border-left: 3.5px solid var(--clr-ecn17278); }
+    .cell-ECN17280 { background: rgba(234, 179, 8, 0.07); border-left: 3.5px solid var(--clr-ecn17280); }
+
+    .cell-ECN17101 .grid-subject-loc { color: var(--clr-ecn17101); }
+    .cell-ECN17102 .grid-subject-loc { color: var(--clr-ecn17102); }
+    .cell-ECN17254 .grid-subject-loc { color: var(--clr-ecn17254); }
+    .cell-ECN17251 .grid-subject-loc { color: var(--clr-ecn17251); }
+    .cell-ECN17256 .grid-subject-loc { color: var(--clr-ecn17256); }
+    .cell-ECN17276 .grid-subject-loc { color: var(--clr-ecn17276); }
+    .cell-ECN17278 .grid-subject-loc { color: var(--clr-ecn17278); }
+    .cell-ECN17280 .grid-subject-loc { color: var(--clr-ecn17280); }
+
+    .timetable td:not(.day-cell):not(.cell-lunch):not(.cell-empty):hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    .cell-tutorial {
+      background: var(--tutorial-bg) !important;
+      border-left: 3.5px solid var(--tutorial-border) !important;
+    }
+
+    .cell-tutorial .grid-subject-name,
+    .cell-tutorial .grid-subject-loc {
+      color: var(--tutorial-text) !important;
+    }
+
+    .cell-lunch {
+      background: var(--lunch-bg);
+      cursor: default !important;
+    }
+
+    .cell-empty {
+      cursor: default !important;
       background: transparent;
     }
 
-    /* Subtle dot pattern in empty cells */
-    .empty-cell::before {
+    .cell-empty::before {
       content: '';
       position: absolute;
       inset: 0;
       background-image: radial-gradient(circle, var(--text-3) 0.5px, transparent 0.5px);
-      background-size: 12px 12px;
-      opacity: 0.15;
-    }
-
-    .empty-cell::after { display: none; }
-
-    /* ── Lunch ── */
-    .lunch-cell {
-      background: var(--lunch-bg);
-    }
-
-    .lunch-cell::before,
-    .lunch-cell::after { display: none !important; }
-
-    .lunch-label {
-      font-size: 0.48rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--lunch-text);
-    }
-
-    /* ── Row hover ── */
-    .timetable tbody tr:hover > td {
-      background-color: var(--row-hover);
-    }
-
-    .timetable tbody tr:hover .lunch-cell {
-      background: var(--lunch-bg);
-    }
-
-    .timetable tbody tr:hover .tutorial-cell {
-      background: var(--tutorial-bg);
+      background-size: 10px 10px;
+      opacity: 0.12;
     }
 
     /* ══════════════════════════════════════
-       SUBJECT DETAILS
+       MODALS (Config Wizard & Subject Info)
     ══════════════════════════════════════ */
-    .details-section {
-      margin-top: 18px;
-    }
-
-    .details-card {
-      background: var(--bg-glass);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      box-shadow: var(--shadow-card);
-      overflow: hidden;
-      transition: background 0.4s, border-color 0.4s;
-    }
-
-    .details-title {
-      padding: 10px 18px;
-      background: var(--thead-bg);
-      border-bottom: 1px solid var(--glass-border);
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--text-1);
-      letter-spacing: -0.2px;
-    }
-
-    .details-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .details-table thead th {
-      font-size: 0.55rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-3);
-      padding: 8px 18px;
-      text-align: left;
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .details-table tbody td {
-      font-size: 0.7rem;
-      font-weight: 450;
-      color: var(--text-1);
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--glass-border);
-      text-align: left;
-      transition: background 0.2s;
-    }
-
-    .details-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    .details-table tbody tr:hover td {
-      background: var(--row-hover);
-    }
-
-    /* Subject name with accent dot */
-    .detail-subject {
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
       display: flex;
       align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-card);
+      width: 100%;
+      max-width: 480px;
+      padding: 24px;
+      transform: translateY(10px) scale(0.96);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-2);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* Config Step Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .opt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 8px;
     }
 
-    .detail-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .detail-dot-mwc { background: var(--clr-mwc); box-shadow: 0 0 6px var(--clr-mwc); }
-    .detail-dot-nano { background: var(--clr-nano); box-shadow: 0 0 6px var(--clr-nano); }
-    .detail-dot-awc { background: var(--clr-awc); box-shadow: 0 0 6px var(--clr-awc); }
-    .detail-dot-emic { background: var(--clr-emic); box-shadow: 0 0 6px var(--clr-emic); }
-
-    .code-val {
-      font-weight: 700;
-      font-size: 0.66rem;
-      letter-spacing: 0.5px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .code-mwc { color: var(--clr-mwc); }
-    .code-nano { color: var(--clr-nano); }
-    .code-awc { color: var(--clr-awc); }
-    .code-emic { color: var(--clr-emic); }
-
-    .prof-val {
-      color: var(--text-2);
-      font-weight: 500;
-    }
-
-    /* ══════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════ */
-    .footer {
+    .opt-btn {
+      padding: 10px;
+      border-radius: 12px;
+      border: 1.5px solid var(--glass-border);
+      background: var(--bg-glass);
+      color: var(--text-1);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
       text-align: center;
-      margin-top: 14px;
-      font-size: 0.56rem;
-      color: var(--text-3);
-      font-weight: 400;
+      transition: all 0.2s ease;
     }
+
+    .opt-btn:hover {
+      border-color: var(--glass-border-hover);
+    }
+
+    .opt-btn.selected {
+      border-color: #6366f1;
+      background: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Subject Info Modal Content */
+    .info-badge {
+      display: inline-block;
+      font-family: monospace;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      background: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
+      margin-bottom: 10px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 0.78rem;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-key { color: var(--text-2); font-weight: 500; }
+    .info-val { font-weight: 700; color: var(--text-1); text-align: right; }
 
     /* ══════════════════════════════════════
-       TRANSITIONS & PRINT
+       RESPONSIVE BREAKPOINTS
     ══════════════════════════════════════ */
-    * {
-      transition-property: background, background-color, border-color, color, box-shadow;
-      transition-duration: 0.35s;
-      transition-timing-function: ease;
-    }
-
-    /* Don't transition layout properties */
-    .subj-cell, .day-pill, .theme-toggle {
-      transition: all 0.3s ease;
-    }
-
-    @media print {
-      body { background: #fff; padding: 16px; }
-      body::before { display: none; }
-      .theme-toggle { display: none; }
-      .subj-cell::before, .empty-cell::before { display: none; }
+    @media (min-width: 769px) {
+      .today-view-container { display: none; }
+      .week-view-container { display: block; }
+      .view-switcher { display: none; }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
 
-    <!-- Header -->
-    <div class="header">
-      <h1>Weekly Timetable</h1>
-      <div class="header-right">
-        <div class="legend">
-          <div class="legend-item"><div class="legend-dot dot-lec"></div>Lecture</div>
-          <div class="legend-item"><div class="legend-dot dot-tut"></div>Tutorial</div>
-          <div class="legend-item"><div class="legend-dot dot-lunch"></div>Lunch</div>
+    <!-- Top Header (Mobile Optimized) -->
+    <div class="top-header">
+      <div class="top-header-row">
+        <div class="app-title">
+          <h1>Weekly Timetable</h1>
         </div>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+        <div class="header-actions">
+          <button class="icon-btn dl-btn" onclick="exportPNG()" title="Download timetable image">
+            <span>📥</span> <span class="btn-text-full">Download </span>
+          </button>
+          <button class="icon-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+        </div>
+      </div>
+      <div class="config-badge" id="configPill">
+        <span>Loading preferences...</span>
+        <button onclick="openConfigModal()">Change</button>
       </div>
     </div>
 
-    <!-- Timetable -->
-    <div class="timetable-card">
-      <table class="timetable">
-        <thead>
-          <tr>
-            <th></th>
-            <th>8 – 9</th>
-            <th>9 – 10</th>
-            <th>10 – 11</th>
-            <th>11 – 12</th>
-            <th class="lunch-col-header">12 – 1</th>
-            <th>1 – 2</th>
-            <th>2 – 3</th>
-            <th>3 – 4</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          <!-- ═══ MONDAY ═══ -->
-          <tr>
-            <td class="day-cell day-mon">
-              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Mon</span></div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="subj-cell subj-awc">
-              <div class="cell-content">
-                <div class="subject-name">Adv. Wireless Comm.</div>
-                <div class="subject-loc">SEW7</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
-            <td class="subj-cell subj-nano">
-              <div class="cell-content">
-                <div class="subject-name">Nano Elec</div>
-                <div class="subject-loc">FN4</div>
-              </div>
-            </td>
-            <td class="subj-cell subj-mwc">
-              <div class="cell-content">
-                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
-                <div class="subject-loc">FN4</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-          </tr>
-
-          <!-- ═══ TUESDAY ═══ -->
-          <tr>
-            <td class="day-cell day-tue">
-              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Tue</span></div>
-            </td>
-            <td class="subj-cell subj-awc">
-              <div class="cell-content">
-                <div class="subject-name">Adv. Wireless Comm.</div>
-                <div class="subject-loc">SEW10</div>
-              </div>
-            </td>
-            <td class="subj-cell subj-nano">
-              <div class="cell-content">
-                <div class="subject-name">Nano Elec</div>
-                <div class="subject-loc">SEW10</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
-            <td class="empty-cell"></td>
-            <td class="subj-cell subj-emic">
-              <div class="cell-content">
-                <div class="subject-name">EM Interference &amp; Compatibility</div>
-                <div class="subject-loc">FE16</div>
-              </div>
-            </td>
-            <td class="subj-cell subj-mwc">
-              <div class="cell-content">
-                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
-                <div class="subject-loc">FE16</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ═══ WEDNESDAY ═══ -->
-          <tr>
-            <td class="day-cell day-wed">
-              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Wed</span></div>
-            </td>
-            <td class="subj-cell subj-awc">
-              <div class="cell-content">
-                <div class="subject-name">Adv. Wireless Comm.</div>
-                <div class="subject-loc">FE16</div>
-              </div>
-            </td>
-            <td class="subj-cell tutorial-cell">
-              <div class="cell-content">
-                <span class="tut-badge">Tutorial</span>
-                <div class="subject-name">Nano Elec</div>
-                <div class="subject-loc">FEW1</div>
-              </div>
-            </td>
-            <td class="subj-cell subj-emic">
-              <div class="cell-content">
-                <div class="subject-name">EM Interference &amp; Compatibility</div>
-                <div class="subject-loc">FE16</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
-            <td class="subj-cell subj-mwc">
-              <div class="cell-content">
-                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
-                <div class="subject-loc">GS7</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-          </tr>
-
-          <!-- ═══ THURSDAY ═══ -->
-          <tr>
-            <td class="day-cell day-thu">
-              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Thu</span></div>
-            </td>
-            <td class="subj-cell tutorial-cell">
-              <div class="cell-content">
-                <span class="tut-badge">Tutorial</span>
-                <div class="subject-name">Mobile &amp; Wireless Comm.</div>
-                <div class="subject-loc">FEW15</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-          </tr>
-
-          <!-- ═══ FRIDAY ═══ -->
-          <tr>
-            <td class="day-cell day-fri">
-              <div class="day-pill"><span class="day-dot"></span><span class="day-text">Fri</span></div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-            <td class="lunch-cell"><span class="lunch-label">Lunch</span></td>
-            <td class="subj-cell subj-emic">
-              <div class="cell-content">
-                <div class="subject-name">EM Interference &amp; Compatibility</div>
-                <div class="subject-loc">FE18</div>
-              </div>
-            </td>
-            <td class="empty-cell"></td>
-            <td class="empty-cell"></td>
-          </tr>
-
-        </tbody>
-      </table>
+    <!-- View Switcher (Visible on mobile) -->
+    <div class="view-switcher">
+      <div class="view-tab active" id="tabToday" onclick="switchView('today')">📅 Today</div>
+      <div class="view-tab" id="tabWeek" onclick="switchView('week')">🗓️ Full Week</div>
     </div>
 
-    <!-- Subject Details -->
-    <div class="details-section">
-      <div class="details-card">
-        <div class="details-title">Subject Details</div>
-        <table class="details-table">
+    <!-- Mobile Timeline View (Day Tabs + Compact Vertical Timeline) -->
+    <div class="today-view-container" id="todayView">
+      <div class="day-tabs-bar" id="dayTabsBar">
+        <button class="day-tab" onclick="setDay(0)">MON</button>
+        <button class="day-tab" onclick="setDay(1)">TUE</button>
+        <button class="day-tab" onclick="setDay(2)">WED</button>
+        <button class="day-tab" onclick="setDay(3)">THU</button>
+        <button class="day-tab" onclick="setDay(4)">FRI</button>
+      </div>
+      <div class="day-header-meta">
+        <div class="day-header-title" id="todayDateLabel">Monday</div>
+        <div class="day-header-subtitle" id="todayClassCount">3 Classes Scheduled</div>
+      </div>
+      <div class="timeline-container" id="todaySlotsList">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- Full Week Grid View -->
+    <div class="week-view-container" id="weekView">
+      <div class="desktop-legend">
+        <div class="legend-items">
+          <div class="legend-tag"><div class="legend-dot-icon dot-lec-icon"></div>Lecture</div>
+          <div class="legend-tag"><div class="legend-dot-icon dot-tut-icon"></div>Tutorial (T)</div>
+          <div class="legend-tag"><div class="legend-dot-icon dot-lunch-icon"></div>Lunch</div>
+        </div>
+        <div style="font-size:0.68rem;color:var(--text-3);font-weight:600;">
+          💡 Click any subject block for details
+        </div>
+      </div>
+      <div class="timetable-card">
+        <table class="timetable" id="fullTimetable">
           <thead>
             <tr>
-              <th style="width:45%">Subject</th>
-              <th style="width:25%">Code</th>
-              <th>Professor</th>
+              <th></th>
+              <th>8 – 9</th>
+              <th>9 – 10</th>
+              <th>10 – 11</th>
+              <th>11 – 12</th>
+              <th>12 – 1</th>
+              <th>1 – 2</th>
+              <th>2 – 3</th>
+              <th>3 – 4</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><div class="detail-subject"><span class="detail-dot detail-dot-mwc"></span>Mobile and Wireless Communication</div></td>
-              <td class="code-val code-mwc">ECN17101</td>
-              <td class="prof-val">—</td>
-            </tr>
-            <tr>
-              <td><div class="detail-subject"><span class="detail-dot detail-dot-nano"></span>Nano Electronics and Its Applications</div></td>
-              <td class="code-val code-nano">ECN17102</td>
-              <td class="prof-val">—</td>
-            </tr>
-            <tr>
-              <td><div class="detail-subject"><span class="detail-dot detail-dot-awc"></span>Advanced Wireless Communication</div></td>
-              <td class="code-val code-awc">ECN17251</td>
-              <td class="prof-val">—</td>
-            </tr>
-            <tr>
-              <td><div class="detail-subject"><span class="detail-dot detail-dot-emic"></span>Electromagnetic Interference &amp; Compatibility</div></td>
-              <td class="code-val code-emic">ECN17276</td>
-              <td class="prof-val">—</td>
-            </tr>
+          <tbody id="gridTbody">
+            <!-- Rendered via JS -->
           </tbody>
         </table>
       </div>
     </div>
 
-    <div class="footer">Updated · July 2026</div>
-
   </div>
 
-  <script>
-    const toggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
+  <!-- Config Wizard Modal -->
+  <div class="modal-overlay" id="configModal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>Setup Your Timetable</span>
+      </div>
 
-    // Load saved preference (default: dark)
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-      html.setAttribute('data-theme', 'light');
-      toggle.textContent = '🌙';
-    } else {
-      html.setAttribute('data-theme', 'dark');
-      toggle.textContent = '☀️';
+      <div class="form-group">
+        <label class="form-label">Select Your Section</label>
+        <div class="opt-grid">
+          <button class="opt-btn" id="btnSecA" onclick="selectSection('A')">Section A</button>
+          <button class="opt-btn" id="btnSecB" onclick="selectSection('B')">Section B</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Select Elective 1</label>
+        <div class="opt-grid" id="el1OptionsGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Select Elective 2</label>
+        <div class="opt-grid" id="el2OptionsGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="saveConfiguration()">Generate Timetable</button>
+    </div>
+  </div>
+
+  <!-- Subject Details Modal -->
+  <div class="modal-overlay" id="subjectModal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>Subject Details</span>
+        <button class="close-btn" onclick="closeSubjectModal()">✕</button>
+      </div>
+      <div id="subjectModalContent">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       APPLICATION LOGIC & DATA
+  ══════════════════════════════════════ -->
+  <script>
+    // Embedded Data Fallback (Works offline & without CORS)
+    const EMBEDDED_DATA = {
+      "subjects": {
+        "ECN17101": { "name": "Mobile and Wireless Communication", "short": "Mobile & Wireless Comm.", "profA": "—", "profB": "—" },
+        "ECN17102": { "name": "Nano Electronics and Its Applications", "short": "Nano Elec", "profA": "—", "profB": "—" },
+        "ECN17254": { "name": "Mixed Mode VLSI Design", "short": "Mixed Mode VLSI", "profA": "—", "profB": "—" },
+        "ECN17251": { "name": "Advanced Wireless Communication", "short": "Adv. Wireless Comm.", "profA": "—", "profB": "—" },
+        "ECN17256": { "name": "Memory Design and Testing", "short": "Memory Design", "profA": "—", "profB": "—" },
+        "ECN17276": { "name": "Electromagnetic Interference & Compatibility", "short": "EM Interference", "profA": "—", "profB": "—" },
+        "ECN17278": { "name": "Signal Compression Techniques", "short": "Signal Compression", "profA": "—", "profB": "—" },
+        "ECN17280": { "name": "Organic Electronics", "short": "Organic Elec", "profA": "—", "profB": "—" }
+      },
+      "sections": {
+        "A": {
+          "mon": { "2-3": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "SEW1" } },
+          "tue": { "3-4": { "code": "ECN17102", "name": "Nano Elec", "loc": "SEW1" } },
+          "wed": { "9-10": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FE16", "isTutorial": true } },
+          "thu": { "8-9": { "code": "ECN17102", "name": "Nano Elec", "loc": "SEW9" }, "10-11": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "SEW9" } },
+          "fri": { "2-3": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FE18" }, "3-4": { "code": "ECN17102", "name": "Nano Elec", "loc": "FE18" } }
+        },
+        "B": {
+          "mon": { "1-2": { "code": "ECN17102", "name": "Nano Elec", "loc": "FN4" }, "2-3": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FN4" } },
+          "tue": { "9-10": { "code": "ECN17102", "name": "Nano Elec", "loc": "SEW10" }, "3-4": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FE16" } },
+          "wed": { "9-10": { "code": "ECN17102", "name": "Nano Elec", "loc": "FEW1", "isTutorial": true }, "1-2": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "GS7" } },
+          "thu": { "8-9": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FEW15", "isTutorial": true } },
+          "fri": {}
+        }
+      },
+      "electives": {
+        "group1": {
+          "label": "Elective 1",
+          "options": [
+            { "id": "ECN17254", "code": "ECN17254", "name": "Mixed Mode VLSI Design", "schedule": { "mon": { "8-9": { "loc": "LH2" } }, "wed": { "11-12": { "loc": "FE16" } }, "fri": { "8-9": { "loc": "LH2" } } } },
+            { "id": "ECN17251", "code": "ECN17251", "name": "Adv. Wireless Comm", "schedule": { "mon": { "10-11": { "loc": "SEW7" } }, "tue": { "8-9": { "loc": "SEW10" } }, "wed": { "8-9": { "loc": "FE16" } } } },
+            { "id": "ECN17256", "code": "ECN17256", "name": "Memory Design and Testing", "schedule": { "mon": { "9-10": { "loc": "LH2" } }, "wed": { "8-9": { "loc": "FEW1" } }, "fri": { "9-10": { "loc": "LH2" } } } }
+          ]
+        },
+        "group2": {
+          "label": "Elective 2",
+          "options": [
+            { "id": "ECN17276", "code": "ECN17276", "name": "EM interference & Compatibility", "schedule": { "tue": { "2-3": { "loc": "FE16" } }, "wed": { "10-11": { "loc": "FE16" } }, "fri": { "1-2": { "loc": "FE18" } } } },
+            { "id": "ECN17278", "code": "ECN17278", "name": "Signal Compression Techniques", "schedule": { "mon": { "3-4": { "loc": "SEW1" } }, "tue": { "1-2": { "loc": "FE16" } }, "thu": { "9-10": { "loc": "SEW9" } } } },
+            { "id": "ECN17280", "code": "ECN17280", "name": "Organic Electronics", "schedule": { "tue": { "2-3": { "loc": "SEW1" } }, "wed": { "10-11": { "loc": "FN1" } }, "thu": { "1-2": { "loc": "FE18" } } } }
+          ]
+        }
+      }
+    };
+
+    let APP_DATA = EMBEDDED_DATA;
+
+    // State Variables
+    let userSection = 'A';
+    let userEl1 = 'ECN17254';
+    let userEl2 = 'ECN17276';
+    let currentDayIndex = 0; // 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri
+    const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri'];
+    const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const TIME_SLOTS = ['8-9', '9-10', '10-11', '11-12', '12-1', '1-2', '2-3', '3-4'];
+
+    // Initialize App
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Try fetching external data.json
+      try {
+        const res = await fetch('data.json');
+        if (res.ok) {
+          APP_DATA = await res.json();
+        }
+      } catch (e) {
+        console.log('Using embedded fallback data');
+      }
+
+      loadSavedConfig();
+      initCurrentDay();
+      renderConfigWizardOptions();
+      renderApp();
+    });
+
+    // Day Detection (Auto pick current weekday)
+    let isWeekend = false;
+    function initCurrentDay() {
+      const day = new Date().getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+      if (day >= 1 && day <= 5) {
+        currentDayIndex = day - 1;
+        isWeekend = false;
+      } else {
+        currentDayIndex = 0; // Show Monday on Weekend
+        isWeekend = true;
+      }
     }
 
-    toggle.addEventListener('click', () => {
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        html.setAttribute('data-theme', 'light');
-        toggle.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.setAttribute('data-theme', 'dark');
-        toggle.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
+    // Preferences & LocalStorage
+    function loadSavedConfig() {
+      const s = localStorage.getItem('tt_section');
+      const e1 = localStorage.getItem('tt_el1');
+      const e2 = localStorage.getItem('tt_el2');
+      const t = localStorage.getItem('tt_theme');
+
+      if (s) userSection = s;
+      if (e1) userEl1 = e1;
+      if (e2) userEl2 = e2;
+      if (t) document.documentElement.setAttribute('data-theme', t);
+
+      if (!s || !e1 || !e2) {
+        openConfigModal();
       }
-    });
+    }
+
+    function saveConfiguration() {
+      localStorage.setItem('tt_section', userSection);
+      localStorage.setItem('tt_el1', userEl1);
+      localStorage.setItem('tt_el2', userEl2);
+      closeConfigModal();
+      renderApp();
+    }
+
+    // Config Wizard Modal UI
+    function openConfigModal() {
+      document.getElementById('configModal').classList.add('active');
+      selectSection(userSection);
+      selectEl1(userEl1);
+      selectEl2(userEl2);
+    }
+
+    function closeConfigModal() {
+      document.getElementById('configModal').classList.remove('active');
+    }
+
+    function renderConfigWizardOptions() {
+      const g1 = document.getElementById('el1OptionsGrid');
+      const g2 = document.getElementById('el2OptionsGrid');
+
+      g1.innerHTML = APP_DATA.electives.group1.options.map(opt => `
+        <button class="opt-btn" id="btn_el1_${opt.id}" onclick="selectEl1('${opt.id}')">
+          ${opt.name}
+        </button>
+      `).join('');
+
+      g2.innerHTML = APP_DATA.electives.group2.options.map(opt => `
+        <button class="opt-btn" id="btn_el2_${opt.id}" onclick="selectEl2('${opt.id}')">
+          ${opt.name}
+        </button>
+      `).join('');
+    }
+
+    function selectSection(sec) {
+      userSection = sec;
+      document.getElementById('btnSecA').classList.toggle('selected', sec === 'A');
+      document.getElementById('btnSecB').classList.toggle('selected', sec === 'B');
+    }
+
+    function selectEl1(id) {
+      userEl1 = id;
+      APP_DATA.electives.group1.options.forEach(opt => {
+        const btn = document.getElementById(`btn_el1_${opt.id}`);
+        if (btn) btn.classList.toggle('selected', opt.id === id);
+      });
+    }
+
+    function selectEl2(id) {
+      userEl2 = id;
+      APP_DATA.electives.group2.options.forEach(opt => {
+        const btn = document.getElementById(`btn_el2_${opt.id}`);
+        if (btn) btn.classList.toggle('selected', opt.id === id);
+      });
+    }
+
+    // Schedule Merging Engine
+    function buildUnifiedSchedule() {
+      const merged = { mon: {}, tue: {}, wed: {}, thu: {}, fri: {} };
+
+      // 1. Add base section timetable
+      const secData = APP_DATA.sections[userSection] || {};
+      DAYS.forEach(d => {
+        if (secData[d]) {
+          Object.keys(secData[d]).forEach(slot => {
+            merged[d][slot] = { ...secData[d][slot] };
+          });
+        }
+      });
+
+      // 2. Merge Elective 1 choice
+      const opt1 = APP_DATA.electives.group1.options.find(o => o.id === userEl1);
+      if (opt1 && opt1.schedule) {
+        DAYS.forEach(d => {
+          if (opt1.schedule[d]) {
+            Object.keys(opt1.schedule[d]).forEach(slot => {
+              merged[d][slot] = {
+                code: opt1.code,
+                name: opt1.name,
+                loc: opt1.schedule[d][slot].loc
+              };
+            });
+          }
+        });
+      }
+
+      // 3. Merge Elective 2 choice
+      const opt2 = APP_DATA.electives.group2.options.find(o => o.id === userEl2);
+      if (opt2 && opt2.schedule) {
+        DAYS.forEach(d => {
+          if (opt2.schedule[d]) {
+            Object.keys(opt2.schedule[d]).forEach(slot => {
+              merged[d][slot] = {
+                code: opt2.code,
+                name: opt2.name,
+                loc: opt2.schedule[d][slot].loc
+              };
+            });
+          }
+        });
+      }
+
+      return merged;
+    }
+
+    // Main Render Function
+    function renderApp() {
+      const schedule = buildUnifiedSchedule();
+
+      // Update header pill
+      const el1Obj = APP_DATA.electives.group1.options.find(o => o.id === userEl1);
+      const el2Obj = APP_DATA.electives.group2.options.find(o => o.id === userEl2);
+      document.getElementById('configPill').querySelector('span').innerText = 
+        `Sec ${userSection} · ${el1Obj ? el1Obj.name : ''} · ${el2Obj ? el2Obj.name : ''}`;
+
+      renderTodayView(schedule);
+      renderGridTable(schedule);
+    }
+
+    // Render Mobile Timeline View (Day Tabs + Vertical Timeline)
+    function renderTodayView(schedule) {
+      const dayKey = DAYS[currentDayIndex];
+      document.getElementById('todayDateLabel').innerText = DAY_NAMES[currentDayIndex];
+
+      // Update Active Day Tab Button
+      const tabs = document.querySelectorAll('.day-tab');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === currentDayIndex);
+      });
+
+      const daySlots = schedule[dayKey] || {};
+      const container = document.getElementById('todaySlotsList');
+      container.innerHTML = '';
+
+      let classCount = 0;
+      TIME_SLOTS.forEach(slot => {
+        if (slot !== '12-1' && daySlots[slot]) classCount++;
+      });
+
+      document.getElementById('todayClassCount').innerText = (isWeekend && currentDayIndex === 0) 
+        ? 'Weekend · Upcoming Mon Schedule' 
+        : `${classCount} Class${classCount === 1 ? '' : 'es'} Scheduled`;
+
+      let hasClass = false;
+
+      TIME_SLOTS.forEach(slot => {
+        const displayTime = slot.replace('-', ' – ');
+
+        if (slot === '12-1') {
+          container.innerHTML += `
+            <div class="timeline-row">
+              <div class="timeline-time-label">${displayTime}</div>
+              <div class="timeline-node" style="opacity:0.3"></div>
+              <div class="timeline-card-base timeline-free-card">
+                Lunch Break
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        const slotData = daySlots[slot];
+        if (slotData) {
+          hasClass = true;
+          const isTut = slotData.isTutorial;
+          const subjClr = `var(--clr-${slotData.code.toLowerCase()}, #6366f1)`;
+
+          container.innerHTML += `
+            <div class="timeline-row">
+              <div class="timeline-time-label">${displayTime}</div>
+              <div class="timeline-node" style="background:${isTut ? 'var(--tutorial-text)' : subjClr};border-color:${subjClr};box-shadow:0 0 8px ${subjClr}"></div>
+              <div class="timeline-card-base timeline-card ${isTut ? 'is-tutorial' : ''}" style="border-left:3.5px solid ${isTut ? 'var(--tutorial-border)' : subjClr}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}')">
+                <div class="timeline-card-header">
+                  <div class="timeline-subj-name">${slotData.name}</div>
+                  <div class="timeline-subj-loc" style="color:${subjClr}">📍 ${slotData.loc}</div>
+                </div>
+                <div class="timeline-card-footer">
+                  <span class="code-pill">${slotData.code}</span>
+                  ${isTut ? '<span class="timeline-tut-badge">Tutorial</span>' : ''}
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML += `
+            <div class="timeline-row">
+              <div class="timeline-time-label">${displayTime}</div>
+              <div class="timeline-node" style="opacity:0.3"></div>
+              <div class="timeline-card-base timeline-free-card">
+                Free Slot
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      if (!hasClass && classCount === 0) {
+        container.innerHTML = `
+          <div class="no-class-banner">
+            <h3>No classes scheduled 🎉</h3>
+            <p style="font-size:0.75rem;">Enjoy your free day!</p>
+          </div>
+        `;
+      }
+    }
+
+    function setDay(idx) {
+      currentDayIndex = idx;
+      renderApp();
+    }
+
+    // Render Full Grid Table (Desktop Optimized)
+    function renderGridTable(schedule) {
+      const tbody = document.getElementById('gridTbody');
+      tbody.innerHTML = '';
+      const dayColors = ['#6366f1', '#f97316', '#10b981', '#ec4899', '#8b5cf6'];
+
+      DAYS.forEach((dayKey, idx) => {
+        const dotColor = dayColors[idx];
+        let rowHtml = `
+          <tr>
+            <td class="day-cell">
+              <div class="day-cell-inner">
+                <span class="day-dot-indicator" style="background:${dotColor};box-shadow:0 0 6px ${dotColor}"></span>
+                <span class="day-text-label">${DAY_NAMES[idx].slice(0,3)}</span>
+              </div>
+            </td>
+        `;
+
+        TIME_SLOTS.forEach(slot => {
+          if (slot === '12-1') {
+            rowHtml += `<td class="cell-lunch cell-empty"><span style="font-size:0.55rem;color:var(--text-3);font-weight:600;opacity:0.6;">Lunch Break</span></td>`;
+            return;
+          }
+
+          const slotData = schedule[dayKey][slot];
+          if (slotData) {
+            const isTut = slotData.isTutorial;
+            rowHtml += `
+              <td class="cell-${slotData.code} ${isTut ? 'cell-tutorial' : ''}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}')">
+                ${isTut ? '<span class="grid-tut-tag">Tutorial</span>' : ''}
+                <div class="grid-subject-name">${slotData.name}</div>
+                <div class="grid-subject-loc">📍 ${slotData.loc}</div>
+              </td>
+            `;
+          } else {
+            rowHtml += `<td class="cell-empty"></td>`;
+          }
+        });
+
+        rowHtml += `</tr>`;
+        tbody.innerHTML += rowHtml;
+      });
+    }
+
+    // View Switching Logic (Today vs Week)
+    function switchView(view) {
+      document.getElementById('todayView').style.display = view === 'today' ? 'block' : 'none';
+      document.getElementById('weekView').style.display = view === 'week' ? 'block' : 'none';
+      document.getElementById('tabToday').classList.toggle('active', view === 'today');
+      document.getElementById('tabWeek').classList.toggle('active', view === 'week');
+    }
+
+    // Subject Modal Logic
+    function openSubjectModal(code, loc) {
+      const sub = APP_DATA.subjects[code] || { name: code, profA: '—', profB: '—' };
+      const prof = userSection === 'A' ? sub.profA : sub.profB;
+
+      const content = document.getElementById('subjectModalContent');
+      content.innerHTML = `
+        <div style="text-align:center;">
+          <span class="info-badge">${code}</span>
+          <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:14px;">${sub.name}</h3>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Location / Room</span>
+          <span class="info-val">📍 ${loc}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Section</span>
+          <span class="info-val">Section ${userSection}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Professor</span>
+          <span class="info-val">👨‍🏫 ${prof || '—'}</span>
+        </div>
+      `;
+
+      document.getElementById('subjectModal').classList.add('active');
+    }
+
+    function closeSubjectModal() {
+      document.getElementById('subjectModal').classList.remove('active');
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('tt_theme', next);
+      document.getElementById('themeToggleBtn').innerText = next === 'light' ? '🌙' : '☀️';
+    }
+
+    // Export Image Function (Full 5-Day Week Grid PNG on both Mobile & Desktop)
+    function exportPNG() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      // Create off-screen container with desktop width for full week rendering
+      const wrapper = document.createElement('div');
+      wrapper.style.position = 'fixed';
+      wrapper.style.left = '-9999px';
+      wrapper.style.top = '0';
+      wrapper.style.width = '1050px';
+      wrapper.style.background = isDark ? '#09090e' : '#f0f2f5';
+      wrapper.style.padding = '24px';
+      wrapper.style.borderRadius = '16px';
+      wrapper.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+      // Clone weekView node
+      const clone = document.getElementById('weekView').cloneNode(true);
+      clone.style.display = 'block';
+      wrapper.appendChild(clone);
+      document.body.appendChild(wrapper);
+
+      html2canvas(wrapper, {
+        backgroundColor: isDark ? '#09090e' : '#f0f2f5',
+        scale: 2,
+        width: 1050,
+        windowWidth: 1200
+      }).then(canvas => {
+        document.body.removeChild(wrapper);
+
+        const link = document.createElement('a');
+        link.download = `Timetable_Sec${userSection}_FullWeek.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+      }).catch(err => {
+        alert('PNG Export error: ' + err.message);
+        if (document.body.contains(wrapper)) {
+          document.body.removeChild(wrapper);
+        }
+      });
+    }
   </script>
 </body>
 </html>

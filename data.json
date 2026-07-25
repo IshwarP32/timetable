@@ -1,0 +1,100 @@
+{
+  "subjects": {
+    "ECN17101": { "name": "Mobile and Wireless Communication", "short": "Mobile & Wireless Comm.", "profA": "—", "profB": "—" },
+    "ECN17102": { "name": "Nano Electronics and Its Applications", "short": "Nano Elec", "profA": "—", "profB": "—" },
+    "ECN17254": { "name": "Mixed Mode VLSI Design", "short": "Mixed Mode VLSI", "profA": "—", "profB": "—" },
+    "ECN17251": { "name": "Advanced Wireless Communication", "short": "Adv. Wireless Comm.", "profA": "—", "profB": "—" },
+    "ECN17256": { "name": "Memory Design and Testing", "short": "Memory Design", "profA": "—", "profB": "—" },
+    "ECN17276": { "name": "Electromagnetic Interference & Compatibility", "short": "EM Interference", "profA": "—", "profB": "—" },
+    "ECN17278": { "name": "Signal Compression Techniques", "short": "Signal Compression", "profA": "—", "profB": "—" },
+    "ECN17280": { "name": "Organic Electronics", "short": "Organic Elec", "profA": "—", "profB": "—" }
+  },
+  "sections": {
+    "A": {
+      "mon": { "2-3": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "SEW1" } },
+      "tue": { "3-4": { "code": "ECN17102", "name": "Nano Elec", "loc": "SEW1" } },
+      "wed": { "9-10": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FE16", "isTutorial": true } },
+      "thu": { "8-9": { "code": "ECN17102", "name": "Nano Elec", "loc": "SEW9" }, "10-11": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "SEW9" } },
+      "fri": { "2-3": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FE18" }, "3-4": { "code": "ECN17102", "name": "Nano Elec", "loc": "FE18" } }
+    },
+    "B": {
+      "mon": { "1-2": { "code": "ECN17102", "name": "Nano Elec", "loc": "FN4" }, "2-3": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FN4" } },
+      "tue": { "9-10": { "code": "ECN17102", "name": "Nano Elec", "loc": "SEW10" }, "3-4": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FE16" } },
+      "wed": { "9-10": { "code": "ECN17102", "name": "Nano Elec", "loc": "FEW1", "isTutorial": true }, "1-2": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "GS7" } },
+      "thu": { "8-9": { "code": "ECN17101", "name": "Mobile & Wireless Comm.", "loc": "FEW15", "isTutorial": true } },
+      "fri": {}
+    }
+  },
+  "electives": {
+    "group1": {
+      "label": "Elective 1",
+      "options": [
+        {
+          "id": "ECN17254",
+          "code": "ECN17254",
+          "name": "Mixed Mode VLSI Design",
+          "schedule": {
+            "mon": { "8-9": { "loc": "LH2" } },
+            "wed": { "11-12": { "loc": "FE16" } },
+            "fri": { "8-9": { "loc": "LH2" } }
+          }
+        },
+        {
+          "id": "ECN17251",
+          "code": "ECN17251",
+          "name": "Adv. Wireless Comm",
+          "schedule": {
+            "mon": { "10-11": { "loc": "SEW7" } },
+            "tue": { "8-9": { "loc": "SEW10" } },
+            "wed": { "8-9": { "loc": "FE16" } }
+          }
+        },
+        {
+          "id": "ECN17256",
+          "code": "ECN17256",
+          "name": "Memory Design and Testing",
+          "schedule": {
+            "mon": { "9-10": { "loc": "LH2" } },
+            "wed": { "8-9": { "loc": "FEW1" } },
+            "fri": { "9-10": { "loc": "LH2" } }
+          }
+        }
+      ]
+    },
+    "group2": {
+      "label": "Elective 2",
+      "options": [
+        {
+          "id": "ECN17276",
+          "code": "ECN17276",
+          "name": "EM interference & Compatibility",
+          "schedule": {
+            "tue": { "2-3": { "loc": "FE16" } },
+            "wed": { "10-11": { "loc": "FE16" } },
+            "fri": { "1-2": { "loc": "FE18" } }
+          }
+        },
+        {
+          "id": "ECN17278",
+          "code": "ECN17278",
+          "name": "Signal Compression Techniques",
+          "schedule": {
+            "mon": { "3-4": { "loc": "SEW1" } },
+            "tue": { "1-2": { "loc": "FE16" } },
+            "thu": { "9-10": { "loc": "SEW9" } }
+          }
+        },
+        {
+          "id": "ECN17280",
+          "code": "ECN17280",
+          "name": "Organic Electronics",
+          "schedule": {
+            "tue": { "2-3": { "loc": "SEW1" } },
+            "wed": { "10-11": { "loc": "FN1" } },
+            "thu": { "1-2": { "loc": "FE18" } }
+          }
+        }
+      ]
+    }
+  }
+}
