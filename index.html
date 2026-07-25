@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>University Timetable</title>
+  <title>ECE Timetable</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g2b' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%238b5cf6'/><stop offset='100%' stop-color='%23f97316'/></linearGradient></defs><rect width='100' height='100' rx='28' fill='url(%23g2b)'/><rect x='22' y='22' width='16' height='16' rx='5' fill='white' fill-opacity='0.95'/><rect x='42' y='22' width='16' height='16' rx='5' fill='white' fill-opacity='0.4'/><rect x='62' y='22' width='16' height='16' rx='5' fill='white' fill-opacity='0.95'/><rect x='22' y='42' width='16' height='16' rx='5' fill='white' fill-opacity='0.4'/><rect x='42' y='42' width='36' height='16' rx='5' fill='white' fill-opacity='0.95'/><rect x='22' y='62' width='36' height='16' rx='5' fill='white' fill-opacity='0.95'/><rect x='62' y='62' width='16' height='16' rx='5' fill='white' fill-opacity='0.4'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -114,11 +117,11 @@
     /* ══════════════════════════════════════
        HEADER BAR & CONTROLS (Mobile Optimized)
     ══════════════════════════════════════ */
+    /* ══════════════════════════════════════
+       HEADER BAR & CONTROLS (Clean Mobile Header)
+    ══════════════════════════════════════ */
     .top-header {
-      display: flex;
-      flex-direction: column;
       margin-bottom: 16px;
-      gap: 10px;
     }
 
     .top-header-row {
@@ -127,6 +130,25 @@
       justify-content: space-between;
       width: 100%;
       gap: 10px;
+    }
+
+    .app-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon-svg {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .brand-icon-svg:hover {
+      transform: scale(1.06) rotate(3deg);
     }
 
     .app-title h1 {
@@ -153,6 +175,7 @@
       padding: 6px 14px;
       border-radius: 12px;
       width: 100%;
+      margin-top: 10px;
       box-sizing: border-box;
     }
 
@@ -193,6 +216,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       transition: all 0.25s ease;
       white-space: nowrap;
@@ -203,7 +227,23 @@
       transform: translateY(-1px);
     }
 
+    .theme-icon-svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     @media (max-width: 768px) {
+      .brand-icon-svg {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+
       .app-title h1 {
         font-size: 1.15rem;
       }
@@ -212,14 +252,6 @@
         height: 34px;
         padding: 6px 10px;
         font-size: 0.7rem;
-      }
-
-      .icon-btn.dl-btn .btn-text-full {
-        display: none;
-      }
-
-      .icon-btn.dl-btn::after {
-        content: 'Image';
       }
     }
 
@@ -292,41 +324,39 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .day-header-meta {
+    .day-header-subtitle-row {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 16px;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 12px;
       padding: 0 4px;
     }
 
-    .day-header-title {
-      font-size: 1.05rem;
-      font-weight: 900;
-      letter-spacing: -0.3px;
-    }
-
     .day-header-subtitle {
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
       color: var(--text-2);
+      letter-spacing: 0.2px;
     }
 
-    /* ══════════════════════════════════════
-       COMPACT VERTICAL TIMELINE
-    ══════════════════════════════════════ */
+    .today-view-container {
+      padding-bottom: 36px;
+      margin-bottom: 24px;
+    }
+
     /* ══════════════════════════════════════
        COMPACT & UNIFORM VERTICAL TIMELINE
     ══════════════════════════════════════ */
     .timeline-container {
       position: relative;
-      padding-left: 64px;
+      padding-left: 66px;
+      margin-bottom: 20px;
     }
 
     .timeline-container::before {
       content: '';
       position: absolute;
-      left: 68px;
+      left: 45px;
       top: 32px;
       bottom: 32px;
       width: 2px;
@@ -339,7 +369,7 @@
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      min-height: 64px;
+      min-height: 72px;
     }
 
     .timeline-row:last-child {
@@ -348,12 +378,12 @@
 
     .timeline-time-label {
       position: absolute;
-      left: -64px;
+      left: -66px;
       top: 50%;
       transform: translateY(-50%);
-      width: 52px;
+      width: 34px;
       text-align: right;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 800;
       color: var(--text-3);
       letter-spacing: -0.2px;
@@ -361,7 +391,7 @@
 
     .timeline-node {
       position: absolute;
-      left: 1px;
+      left: -25px;
       top: 50%;
       transform: translateY(-50%);
       width: 10px;
@@ -376,8 +406,8 @@
     /* Common Card Dimensions for ALL Hour Blocks */
     .timeline-card-base {
       flex: 1;
-      min-height: 64px;
-      margin-left: 16px;
+      min-height: 72px;
+      margin-left: 12px;
       border-radius: 14px;
       padding: 10px 14px;
       display: flex;
@@ -410,14 +440,14 @@
     }
 
     .timeline-subj-name {
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--text-1);
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
     .timeline-subj-loc {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--text-2);
       text-transform: uppercase;
@@ -432,17 +462,17 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
     .timeline-tut-badge {
-      font-size: 0.48rem;
+      font-size: 0.52rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
       background: rgba(245,158,11,0.2);
       color: var(--tutorial-text);
-      padding: 2px 6px;
+      padding: 3px 8px;
       border-radius: 4px;
     }
 
@@ -569,29 +599,29 @@
     }
 
     .timetable thead th {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-3);
-      padding: 12px 6px;
+      padding: 16px 8px;
       background: var(--thead-bg);
       border-bottom: 1px solid var(--glass-border);
       text-align: center;
     }
 
     .timetable thead th:first-child {
-      width: 90px;
+      width: 95px;
       border-right: 1px solid var(--glass-border);
     }
 
     .timetable td {
       text-align: center;
       vertical-align: middle;
-      padding: 8px 6px;
+      padding: 14px 8px;
       border-bottom: 1px solid var(--glass-border);
       border-right: 1px solid var(--glass-border);
-      height: 66px;
+      height: 90px;
       position: relative;
       cursor: pointer;
       transition: all 0.22s ease;
@@ -616,14 +646,14 @@
     }
 
     .day-dot-indicator {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
     .day-text-label {
-      font-size: 0.7rem;
+      font-size: 0.78rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -632,15 +662,15 @@
 
     /* Subject Cell Content */
     .grid-subject-name {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       font-weight: 700;
       line-height: 1.25;
       color: var(--text-1);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .grid-subject-loc {
-      font-size: 0.58rem;
+      font-size: 0.62rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -853,6 +883,121 @@
     .info-val { font-weight: 700; color: var(--text-1); text-align: right; }
 
     /* ══════════════════════════════════════
+       SIDEBAR DRAWER MENU
+    ══════════════════════════════════════ */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 320px;
+      max-width: 88vw;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-left: 1px solid var(--glass-border);
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+      z-index: 1001;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .drawer-overlay.active .drawer-panel {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 10px;
+    }
+
+    .drawer-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .drawer-section-title {
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-2);
+      margin-bottom: 5px;
+    }
+
+    .drawer-nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .drawer-panel .form-group {
+      margin-bottom: 8px !important;
+    }
+
+    .drawer-panel .form-label {
+      margin-bottom: 3px !important;
+      font-size: 0.65rem !important;
+    }
+
+    .drawer-panel .opt-btn {
+      padding: 6px 8px;
+      font-size: 0.7rem;
+    }
+
+    .drawer-btn {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 9px;
+      border: 1px solid var(--glass-border);
+      background: var(--bg-glass);
+      color: var(--text-1);
+      font-size: 0.74rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .drawer-btn:hover {
+      border-color: var(--glass-border-hover);
+    }
+
+    .drawer-btn.active {
+      border-color: #6366f1;
+      background: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
+    }
+
+    /* ══════════════════════════════════════
        RESPONSIVE BREAKPOINTS
     ══════════════════════════════════════ */
     @media (min-width: 769px) {
@@ -866,29 +1011,38 @@
 
   <div class="container">
 
-    <!-- Top Header (Mobile Optimized) -->
+    <!-- Top Header (Clean Title Bar) -->
     <div class="top-header">
       <div class="top-header-row">
         <div class="app-title">
-          <h1>Weekly Timetable</h1>
+          <svg class="brand-icon-svg" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="gBrand" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8b5cf6"/>
+                <stop offset="100%" stop-color="#f97316"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" rx="28" fill="url(#gBrand)"/>
+            <rect x="22" y="22" width="16" height="16" rx="5" fill="white" fill-opacity="0.95"/>
+            <rect x="42" y="22" width="16" height="16" rx="5" fill="white" fill-opacity="0.4"/>
+            <rect x="62" y="22" width="16" height="16" rx="5" fill="white" fill-opacity="0.95"/>
+            <rect x="22" y="42" width="16" height="16" rx="5" fill="white" fill-opacity="0.4"/>
+            <rect x="42" y="42" width="36" height="16" rx="5" fill="white" fill-opacity="0.95"/>
+            <rect x="22" y="62" width="36" height="16" rx="5" fill="white" fill-opacity="0.95"/>
+            <rect x="62" y="62" width="16" height="16" rx="5" fill="white" fill-opacity="0.4"/>
+          </svg>
+          <h1>ECE Timetable</h1>
         </div>
         <div class="header-actions">
-          <button class="icon-btn dl-btn" onclick="exportPNG()" title="Download timetable image">
-            <span>📥</span> <span class="btn-text-full">Download </span>
+          <button class="icon-btn dl-btn" onclick="exportPNG()" title="Download timetable image">Download</button>
+          <button class="icon-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+            <!-- Rendered dynamically via JS -->
           </button>
-          <button class="icon-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+          <button class="icon-btn menu-toggle-btn" onclick="toggleSidebarDrawer()" title="Open Menu" aria-label="Open menu">
+            <svg class="theme-icon-svg" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
         </div>
       </div>
-      <div class="config-badge" id="configPill">
-        <span>Loading preferences...</span>
-        <button onclick="openConfigModal()">Change</button>
-      </div>
-    </div>
-
-    <!-- View Switcher (Visible on mobile) -->
-    <div class="view-switcher">
-      <div class="view-tab active" id="tabToday" onclick="switchView('today')">📅 Today</div>
-      <div class="view-tab" id="tabWeek" onclick="switchView('week')">🗓️ Full Week</div>
     </div>
 
     <!-- Mobile Timeline View (Day Tabs + Compact Vertical Timeline) -->
@@ -900,9 +1054,8 @@
         <button class="day-tab" onclick="setDay(3)">THU</button>
         <button class="day-tab" onclick="setDay(4)">FRI</button>
       </div>
-      <div class="day-header-meta">
-        <div class="day-header-title" id="todayDateLabel">Monday</div>
-        <div class="day-header-subtitle" id="todayClassCount">3 Classes Scheduled</div>
+      <div class="day-header-subtitle-row">
+        <span class="day-header-subtitle" id="todayClassCount">3 Classes Scheduled</span>
       </div>
       <div class="timeline-container" id="todaySlotsList">
         <!-- Rendered via JS -->
@@ -945,39 +1098,6 @@
 
   </div>
 
-  <!-- Config Wizard Modal -->
-  <div class="modal-overlay" id="configModal">
-    <div class="modal-card">
-      <div class="modal-title">
-        <span>Setup Your Timetable</span>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Select Your Section</label>
-        <div class="opt-grid">
-          <button class="opt-btn" id="btnSecA" onclick="selectSection('A')">Section A</button>
-          <button class="opt-btn" id="btnSecB" onclick="selectSection('B')">Section B</button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Select Elective 1</label>
-        <div class="opt-grid" id="el1OptionsGrid">
-          <!-- Rendered via JS -->
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Select Elective 2</label>
-        <div class="opt-grid" id="el2OptionsGrid">
-          <!-- Rendered via JS -->
-        </div>
-      </div>
-
-      <button class="submit-btn" onclick="saveConfiguration()">Generate Timetable</button>
-    </div>
-  </div>
-
   <!-- Subject Details Modal -->
   <div class="modal-overlay" id="subjectModal">
     <div class="modal-card">
@@ -987,6 +1107,61 @@
       </div>
       <div id="subjectModalContent">
         <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar Drawer Menu -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeSidebarDrawer()">
+    <div class="drawer-panel" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <span class="drawer-title">Menu & Preferences</span>
+        <button class="close-btn" onclick="closeSidebarDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-nav-group">
+        <div class="drawer-section-title">View Mode</div>
+        <button class="drawer-btn active" id="drawerTabToday" onclick="switchView('today'); closeSidebarDrawer();">
+          <span>Today Timeline</span>
+        </button>
+        <button class="drawer-btn" id="drawerTabWeek" onclick="switchView('week'); closeSidebarDrawer();">
+          <span>Full Week Grid</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-group">
+        <div class="drawer-section-title">Schedule Preferences</div>
+        
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label" style="font-size:0.68rem;margin-bottom:6px;">Select Section</label>
+          <div class="opt-grid">
+            <button class="opt-btn" id="btnSecA" onclick="selectSection('A')">Section A</button>
+            <button class="opt-btn" id="btnSecB" onclick="selectSection('B')">Section B</button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label" style="font-size:0.68rem;margin-bottom:6px;">Select Elective 1</label>
+          <div class="opt-grid" id="el1OptionsGrid">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label" style="font-size:0.68rem;margin-bottom:6px;">Select Elective 2</label>
+          <div class="opt-grid" id="el2OptionsGrid">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-nav-group" style="margin-top:auto;">
+        <div id="drawerValidationHint" style="font-size:0.68rem;color:#f59e0b;font-weight:700;text-align:center;margin-bottom:8px;display:none;">
+          Please select Section, Elective 1, and Elective 2 to apply.
+        </div>
+        <button class="submit-btn" id="drawerApplyBtn" onclick="applySidebarPreferences();">
+          Apply
+        </button>
       </div>
     </div>
   </div>
@@ -1045,10 +1220,15 @@
 
     let APP_DATA = EMBEDDED_DATA;
 
-    // State Variables
-    let userSection = 'A';
-    let userEl1 = 'ECN17254';
-    let userEl2 = 'ECN17276';
+    // State Variables (Active vs Draft)
+    let userSection = null;
+    let userEl1 = null;
+    let userEl2 = null;
+
+    let draftSection = null;
+    let draftEl1 = null;
+    let draftEl2 = null;
+
     let currentDayIndex = 0; // 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri
     const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri'];
     const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -1111,8 +1291,17 @@
       }
       if (t) document.documentElement.setAttribute('data-theme', t);
 
-      if (!hasHashParams && (!s || !e1 || !e2)) {
-        openConfigModal();
+      draftSection = userSection;
+      draftEl1 = userEl1;
+      draftEl2 = userEl2;
+
+      // If first visit (no saved section or electives), auto open drawer and trigger validation
+      if (!userSection || !userEl1 || !userEl2) {
+        setTimeout(() => {
+          const drawer = document.getElementById('drawerOverlay');
+          if (drawer) drawer.classList.add('active');
+          validateDrawerForm();
+        }, 150);
       }
     }
 
@@ -1125,59 +1314,90 @@
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
       window.location.hash = `sec=${userSection}&el1=${userEl1}&el2=${userEl2}&theme=${currentTheme}`;
 
-      closeConfigModal();
       renderApp();
-    }
-
-    // Config Wizard Modal UI
-    function openConfigModal() {
-      document.getElementById('configModal').classList.add('active');
-      selectSection(userSection);
-      selectEl1(userEl1);
-      selectEl2(userEl2);
-    }
-
-    function closeConfigModal() {
-      document.getElementById('configModal').classList.remove('active');
     }
 
     function renderConfigWizardOptions() {
       const g1 = document.getElementById('el1OptionsGrid');
       const g2 = document.getElementById('el2OptionsGrid');
 
-      g1.innerHTML = APP_DATA.electives.group1.options.map(opt => `
-        <button class="opt-btn" id="btn_el1_${opt.id}" onclick="selectEl1('${opt.id}')">
-          ${opt.name}
-        </button>
-      `).join('');
+      if (g1) {
+        g1.innerHTML = APP_DATA.electives.group1.options.map(opt => `
+          <button class="opt-btn ${opt.id === draftEl1 ? 'selected' : ''}" id="btn_el1_${opt.id}" onclick="selectEl1('${opt.id}')">
+            ${opt.name}
+          </button>
+        `).join('');
+      }
 
-      g2.innerHTML = APP_DATA.electives.group2.options.map(opt => `
-        <button class="opt-btn" id="btn_el2_${opt.id}" onclick="selectEl2('${opt.id}')">
-          ${opt.name}
-        </button>
-      `).join('');
+      if (g2) {
+        g2.innerHTML = APP_DATA.electives.group2.options.map(opt => `
+          <button class="opt-btn ${opt.id === draftEl2 ? 'selected' : ''}" id="btn_el2_${opt.id}" onclick="selectEl2('${opt.id}')">
+            ${opt.name}
+          </button>
+        `).join('');
+      }
+
+      syncSidebarOptionHighlights();
+    }
+
+    function syncSidebarOptionHighlights() {
+      const a = document.getElementById('btnSecA');
+      const b = document.getElementById('btnSecB');
+      if (a) a.classList.toggle('selected', draftSection === 'A');
+      if (b) b.classList.toggle('selected', draftSection === 'B');
+
+      if (APP_DATA && APP_DATA.electives) {
+        APP_DATA.electives.group1.options.forEach(opt => {
+          const btn = document.getElementById(`btn_el1_${opt.id}`);
+          if (btn) btn.classList.toggle('selected', opt.id === draftEl1);
+        });
+        APP_DATA.electives.group2.options.forEach(opt => {
+          const btn = document.getElementById(`btn_el2_${opt.id}`);
+          if (btn) btn.classList.toggle('selected', opt.id === draftEl2);
+        });
+      }
+    }
+
+    function validateDrawerForm() {
+      const isComplete = Boolean(draftSection && draftEl1 && draftEl2);
+      const applyBtn = document.getElementById('drawerApplyBtn');
+      const hint = document.getElementById('drawerValidationHint');
+
+      if (applyBtn) {
+        applyBtn.disabled = !isComplete;
+        applyBtn.style.opacity = isComplete ? '1' : '0.45';
+        applyBtn.style.cursor = isComplete ? 'pointer' : 'not-allowed';
+      }
+
+      if (hint) {
+        hint.style.display = isComplete ? 'none' : 'block';
+        if (!isComplete) {
+          let missing = [];
+          if (!draftSection) missing.push('Section');
+          if (!draftEl1) missing.push('Elective 1');
+          if (!draftEl2) missing.push('Elective 2');
+          hint.innerText = `Please select ${missing.join(', ')} to apply choices.`;
+        }
+      }
+      return isComplete;
     }
 
     function selectSection(sec) {
-      userSection = sec;
-      document.getElementById('btnSecA').classList.toggle('selected', sec === 'A');
-      document.getElementById('btnSecB').classList.toggle('selected', sec === 'B');
+      draftSection = sec;
+      syncSidebarOptionHighlights();
+      validateDrawerForm();
     }
 
     function selectEl1(id) {
-      userEl1 = id;
-      APP_DATA.electives.group1.options.forEach(opt => {
-        const btn = document.getElementById(`btn_el1_${opt.id}`);
-        if (btn) btn.classList.toggle('selected', opt.id === id);
-      });
+      draftEl1 = id;
+      syncSidebarOptionHighlights();
+      validateDrawerForm();
     }
 
     function selectEl2(id) {
-      userEl2 = id;
-      APP_DATA.electives.group2.options.forEach(opt => {
-        const btn = document.getElementById(`btn_el2_${opt.id}`);
-        if (btn) btn.classList.toggle('selected', opt.id === id);
-      });
+      draftEl2 = id;
+      syncSidebarOptionHighlights();
+      validateDrawerForm();
     }
 
     // Schedule Merging Engine
@@ -1231,13 +1451,13 @@
 
     // Main Render Function
     function renderApp() {
+      if (!userSection || !userEl1 || !userEl2) {
+        return; // Wait until preferences are applied on first visit
+      }
       const schedule = buildUnifiedSchedule();
 
-      // Update header pill
-      const el1Obj = APP_DATA.electives.group1.options.find(o => o.id === userEl1);
-      const el2Obj = APP_DATA.electives.group2.options.find(o => o.id === userEl2);
-      document.getElementById('configPill').querySelector('span').innerText = 
-        `Sec ${userSection} · ${el1Obj ? el1Obj.name : ''} · ${el2Obj ? el2Obj.name : ''}`;
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      updateThemeIcons(currentTheme);
 
       renderTodayView(schedule);
       renderGridTable(schedule);
@@ -1246,7 +1466,8 @@
     // Render Mobile Timeline View (Day Tabs + Vertical Timeline)
     function renderTodayView(schedule) {
       const dayKey = DAYS[currentDayIndex];
-      document.getElementById('todayDateLabel').innerText = DAY_NAMES[currentDayIndex];
+      const dateLabel = document.getElementById('todayDateLabel');
+      if (dateLabel) dateLabel.innerText = DAY_NAMES[currentDayIndex];
 
       // Update Active Day Tab Button
       const tabs = document.querySelectorAll('.day-tab');
@@ -1263,9 +1484,12 @@
         if (slot !== '12-1' && daySlots[slot]) classCount++;
       });
 
-      document.getElementById('todayClassCount').innerText = (isWeekend && currentDayIndex === 0) 
-        ? 'Weekend · Upcoming Mon Schedule' 
-        : `${classCount} Class${classCount === 1 ? '' : 'es'} Scheduled`;
+      const classCountEl = document.getElementById('todayClassCount');
+      if (classCountEl) {
+        classCountEl.innerText = (isWeekend && currentDayIndex === 0) 
+          ? 'Weekend · Upcoming Mon Schedule' 
+          : `${classCount} Class${classCount === 1 ? '' : 'es'} Scheduled`;
+      }
 
       let hasClass = false;
 
@@ -1383,8 +1607,56 @@
     function switchView(view) {
       document.getElementById('todayView').style.display = view === 'today' ? 'block' : 'none';
       document.getElementById('weekView').style.display = view === 'week' ? 'block' : 'none';
-      document.getElementById('tabToday').classList.toggle('active', view === 'today');
-      document.getElementById('tabWeek').classList.toggle('active', view === 'week');
+      
+      const tabToday = document.getElementById('tabToday');
+      const tabWeek = document.getElementById('tabWeek');
+      if (tabToday) tabToday.classList.toggle('active', view === 'today');
+      if (tabWeek) tabWeek.classList.toggle('active', view === 'week');
+
+      const drawerTabToday = document.getElementById('drawerTabToday');
+      const drawerTabWeek = document.getElementById('drawerTabWeek');
+      if (drawerTabToday) drawerTabToday.classList.toggle('active', view === 'today');
+      if (drawerTabWeek) drawerTabWeek.classList.toggle('active', view === 'week');
+    }
+
+    // Sidebar Drawer Controls
+    function toggleSidebarDrawer() {
+      const drawer = document.getElementById('drawerOverlay');
+      const isOpening = !drawer.classList.contains('active');
+      if (isOpening) {
+        draftSection = userSection;
+        draftEl1 = userEl1;
+        draftEl2 = userEl2;
+        syncSidebarOptionHighlights();
+        validateDrawerForm();
+      }
+      drawer.classList.toggle('active');
+    }
+
+    function closeSidebarDrawer() {
+      // Prevent closing if user hasn't completed first-time selection
+      if (!userSection || !userEl1 || !userEl2) {
+        validateDrawerForm();
+        return;
+      }
+      draftSection = userSection;
+      draftEl1 = userEl1;
+      draftEl2 = userEl2;
+      syncSidebarOptionHighlights();
+      document.getElementById('drawerOverlay').classList.remove('active');
+    }
+
+    function applySidebarPreferences() {
+      if (!validateDrawerForm()) {
+        return; // Apply button disabled until Section, Elective 1, and Elective 2 are chosen
+      }
+
+      userSection = draftSection;
+      userEl1 = draftEl1;
+      userEl2 = draftEl2;
+
+      saveConfiguration();
+      document.getElementById('drawerOverlay').classList.remove('active');
     }
 
     // Subject Modal Logic
@@ -1419,13 +1691,26 @@
       document.getElementById('subjectModal').classList.remove('active');
     }
 
-    // Theme Toggle
+    // SVG Theme Toggle Icons Engine
+    const SUN_SVG = `<svg class="theme-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+    const MOON_SVG = `<svg class="theme-icon-svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+    function updateThemeIcons(theme) {
+      const btn = document.getElementById('themeToggleBtn');
+      if (btn) btn.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
+      
+      const drawerLabel = document.getElementById('drawerThemeLabel');
+      const drawerIcon = document.getElementById('drawerThemeIcon');
+      if (drawerLabel) drawerLabel.innerText = theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+      if (drawerIcon) drawerIcon.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
+    }
+
     function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme');
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
       const next = current === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('tt_theme', next);
-      document.getElementById('themeToggleBtn').innerText = next === 'light' ? '🌙' : '☀️';
+      updateThemeIcons(next);
     }
 
     // Export Image Function (Full 5-Day Week Grid PNG on both Mobile & Desktop)

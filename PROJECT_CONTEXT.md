@@ -4,48 +4,75 @@
 An interactive, mobile-first and desktop-optimized static Web Application for university students to customize, view, and export their timetable on **GitHub Pages**.
 
 ### Core User Features Implemented
-1. **Interactive Config Wizard**:
-   - Select **Section**: `Section A` or `Section B`.
-   - Select **Elective 1**: `Mixed Mode VLSI Design (ECN17254)`, `Adv. Wireless Comm (ECN17251)`, or `Memory Design and Testing (ECN17256)`.
-   - Select **Elective 2**: `EM interference & Compatibility (ECN17276)`, `Signal Compression Techniques (ECN17278)`, or `Organic Electronics (ECN17280)`.
-2. **Dual-Layer Persistence (Fail-Proof Offline & Revisit)**:
-   - **`localStorage`**: Saves `tt_section`, `tt_el1`, `tt_el2`, `tt_theme` in browser memory on live site visits.
-   - **URL Hash Parameters Sync**: Automatically appends choices to the URL hash (e.g. `#sec=A&el1=ECN17254&el2=ECN17276&theme=dark`). This guarantees that if a user bookmarks the link or downloads the page using Chrome/Safari's "Download Page" feature, their exact timetable loads with **zero data re-entry required**!
-3. **Mobile Header & Navigation**:
-   - **Top Row**: App title (`Weekly Timetable`) on left, compact action buttons (`📥 Image` download + `☀️` theme toggle) on right.
-   - **Sub Pill**: Full-width glass pill (`Sec A · Adv Wireless... · Change`) with smooth text truncation on narrow viewports.
-   - **Direct Current Day Auto-Selection on Load**:
-     - `initCurrentDay()` reads `new Date().getDay()`.
-     - Mon-Fri (1-5): Auto-picks current day tab (`MON`, `TUE`, `WED`, `THU`, `FRI`) and displays its vertical timeline immediately on page load.
-     - Sat-Sun (6, 0): Shows Monday's upcoming schedule with a `Weekend · Upcoming Mon Schedule` indicator.
-4. **Mobile Timeline View**:
-   - **Day Header Meta**: Displays full day name + number of classes scheduled.
-   - **Uniform Vertical Timeline**: Fixed 64px min-height cards for all hour blocks (Classes, Tutorials, Lunch, Free slots).
-   - **Tutorial Badge**: Clean `Tutorial` text badge.
-   - **Lunch Break Slot**: Matches free slot styling cleanly with simple text `Lunch Break` (no emojis/special badges).
-   - Glassmorphism subject cards with subject accent color borders, location badges, code pills, and tutorial badges.
-5. **Desktop Grid View**:
-   - Full 5-day x 8-timeslot glassmorphism grid table (default on desktop >768px).
-   - Per-subject color background tints and glowing left accent borders.
-   - Glowing day indicator dots per row (`MON`, `TUE`, `WED`, `THU`, `FRI`).
-   - Interactive hover scale + elevation box shadows.
-   - Integrated desktop legend bar (Lecture / Tutorial / Lunch).
-6. **Subject Details Modal**:
-   - Clicking/tapping any class slot opens a glassmorphism popup displaying:
-     - Subject Code (e.g. `ECN17101`)
-     - Full Subject Name
-     - Location / Room
-     - Professor Name per section
-7. **Export & Download (Full 5-Day Week PNG)**:
-   - **Download Image**: Clicking "Download Image" / "📥 Image" on mobile or desktop generates a high-resolution, full 5-day week grid PNG screenshot (`Timetable_SecX_FullWeek.png`) via an off-screen desktop renderer.
-8. **Dark / Light Theme**:
-   - Theme toggle with `localStorage` persistence and glassmorphism styling.
+1. **Title & Branding with Brand Icon**:
+   - Updated page title and top header text to **`ECE Timetable`**.
+   - Added vector SVG brand icon beside the main header title matching the Option 2B favicon design (Violet `#8b5cf6` ➔ Coral Orange `#f97316` Time Block Grid).
+   - Clean action button labeled **`Download`**.
+2. **Timeline Dot Positioned Directly ON the Vertical Line**:
+   - Set `.timeline-node` `left: -25px` relative to the row (`padding-left: 66px`), placing the dot center (x = 46px) **pixel-perfectly ON the vertical line** (x = 46px).
+   - Maintained clean clearance between time text (0-34px), node dot (41-51px), and subject card (78px+).
+3. **Restored Class Count & Weekend Subtitle**:
+   - Retained the lecture count / weekend status meta line (`3 Classes Scheduled` / `Weekend · Upcoming Mon Schedule`) above the mobile timeline.
+   - Removed the redundant day title text (`Monday`), relying cleanly on the active weekday tab button (`MON`, `TUE`, `WED`, `THU`, `FRI`).
+4. **Clean Bottom Margin for Mobile Timeline**:
+   - Added `padding-bottom: 36px` to `.today-view-container` so the mobile timeline ends with a clean margin and never touches the bottom edge of the device screen.
+   - Balanced card height to `72px` and row gap `10px` for optimal vertical proportions.
+5. **Generous Time Slot Label Spacing (15px Distance)**:
+   - Updated `.timeline-container` `padding-left: 66px` and time label text (`width: 34px`), creating **15px of clear, generous space** between time text (e.g. `8-9`, `9-10`) and the timeline dot.
+   - Maintained exact node center alignment on the vertical line.
+6. **Compact Single-Screen Sidebar Drawer (No Scrolling)**:
+   - Compacted vertical padding (`16px 18px`), group gaps (`12px`), title margins (`5px`), and button padding (`6px 8px`), allowing the entire sidebar panel to display at once without scrolling on desktop and mobile screens.
+7. **First-Time Visit Setup Validation & Lock**:
+   - On first visit (when no saved section or electives exist in `localStorage` or URL hash), the **Sidebar Drawer (`#drawerOverlay`)** opens automatically on page load.
+   - **Validation Requirement**: The **Apply** button remains disabled (`opacity: 0.45`, `cursor: not-allowed`), and clean text warning (`Please select Section, Elective 1, and Elective 2 to apply.`) appears until the user selects **Section + Elective 1 + Elective 2**.
+   - **Lock**: The sidebar cannot be closed until all 3 required choices are made and **Apply** is clicked.
+8. **Draft Preferences State & Apply Action in Sidebar**:
+   - On subsequent visits, preference changes in the sidebar are held in draft state.
+   - Tapping options updates draft highlights without modifying the main timetable.
+   - **Clicking Apply** commits the draft preferences to active state, updates the timetable live, saves to `localStorage`, syncs URL hash, and closes the drawer.
+   - **Closing without Apply** discards draft changes and preserves the active timetable untouched.
+9. **Full Week Grid Vertical Height Expansion**:
+   - Increased slot cell height from `66px` to **`90px`** and header/cell padding to `14px 8px`, expanding the vertical presence of the full week grid table.
+10. **Dual-Layer Persistence (Fail-Proof Offline & Revisit)**:
+    - **`localStorage`**: Saves `tt_section`, `tt_el1`, `tt_el2`, `tt_theme` in browser memory on live site visits.
+    - **URL Hash Parameters Sync**: Automatically appends choices to the URL hash (e.g. `#sec=A&el1=ECN17254&el2=ECN17276&theme=dark`). This guarantees that if a user bookmarks the link or downloads the page, their exact timetable loads with **zero data re-entry required**!
+11. **Favicon (Option 2B)**:
+    - Modern Time Block Grid icon (`favicon.svg`) featuring a Violet-to-Coral-Orange gradient (`#8b5cf6` ➔ `#f97316`). Linked via file and SVG data URI fallback.
+12. **Ultra-Clean Header Bar & Glassmorphism Sidebar Drawer**:
+    - **Header Bar**: Displays SVG brand icon + `ECE Timetable` title on left + `Download` button + SVG theme toggle icon + **3-line hamburger menu button (`☰`)** on right.
+    - **Slide-in Glassmorphism Drawer (`#drawerOverlay`)**: Tapping `☰` opens a drawer menu from the right edge with:
+      - View mode switcher (`Today Timeline` / `Full Week Grid`).
+      - Draft **Schedule Preferences** options (Section & Electives buttons).
+      - **`Apply`** action button with first-time validation logic.
+13. **Aesthetic SVG Theme Icons**:
+    - Theme toggle button in title bar features minimalist line-art SVG Sun & Moon icons.
+14. **Mobile Timeline View**:
+    - **Day Header Meta**: Subtitle showing `3 Classes Scheduled` or `Weekend · Upcoming Mon Schedule`.
+    - **Uniform Vertical Timeline**: Fixed 72px height cards for all hour blocks (Classes, Tutorials, Lunch, Free slots).
+    - **Tutorial Badge**: Clean `Tutorial` text badge.
+    - **Lunch Break Slot**: Matches free slot styling cleanly with simple text `Lunch Break`.
+    - Glassmorphism subject cards with subject accent color borders, location badges, code pills, and tutorial badges.
+15. **Desktop Grid View**:
+    - Full 5-day x 8-timeslot glassmorphism grid table (default on desktop >768px).
+    - Per-subject color background tints and glowing left accent borders.
+    - Glowing day indicator dots per row (`MON`, `TUE`, `WED`, `THU`, `FRI`).
+    - Interactive hover scale + elevation box shadows.
+    - Integrated desktop legend bar (Lecture / Tutorial / Lunch).
+16. **Subject Details Modal**:
+    - Clicking/tapping any class slot opens a glassmorphism popup displaying:
+      - Subject Code (e.g. `ECN17101`)
+      - Full Subject Name
+      - Location / Room
+      - Professor Name per section
+17. **Export & Download (Full 5-Day Week PNG)**:
+    - **Download**: Clicking "Download" on mobile or desktop generates a high-resolution, full 5-day week grid PNG screenshot (`Timetable_SecX_FullWeek.png`) via an off-screen desktop renderer.
 
 ---
 
 ## 📁 Repository Files Structure
 - `timetable_data.md` — Source markdown file containing section timetables, elective schedules, and subject details. (Completed ✅)
 - `data.json` — Structured JSON data used directly by the frontend web app. (Completed ✅)
+- `favicon.svg` — Option 2B (Violet -> Coral Orange Time Block Grid) vector SVG favicon. (Completed ✅)
 - `index.html` — Single Page Application containing all UI, CSS, and JS logic (GitHub Pages ready). (Completed ✅)
 - `PROJECT_CONTEXT.md` — Active context documentation for AI agents. (Updated ✅)
 
@@ -66,5 +93,6 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
 ## 🚦 Current Progress Status
 - ✅ `timetable_data.md`: Complete.
 - ✅ `data.json`: Complete.
-- ✅ `index.html`: Fully updated with URL Hash parameter sync for fail-proof offline downloads & revisits.
+- ✅ `favicon.svg`: Complete.
+- ✅ `index.html`: Fully updated with pixel-perfect timeline node alignment directly on the vertical line.
 - ✅ `PROJECT_CONTEXT.md`: Fully updated.
