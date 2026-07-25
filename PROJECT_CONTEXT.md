@@ -8,34 +8,34 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
    - Updated page title and top header text to **`ECE Timetable`**.
    - Added vector SVG brand icon beside the main header title matching the Option 2B favicon design (Violet `#8b5cf6` ➔ Coral Orange `#f97316` Time Block Grid).
    - Clean action button labeled **`Download`**.
-2. **Timeline Dot Positioned Directly ON the Vertical Line**:
+2. **Pure LocalStorage Persistence (URL Hash Extensions Removed)**:
+   - User choices (`tt_section`, `tt_el1`, `tt_el2`, `tt_theme`) are stored and retrieved **strictly via `localStorage`**.
+   - Removed URL hash parameters (`#sec=...`) so the URL stays completely clean (`http://localhost/` or `https://username.github.io/repository/`).
+3. **Timeline Dot Positioned Directly ON the Vertical Line**:
    - Set `.timeline-node` `left: -25px` relative to the row (`padding-left: 66px`), placing the dot center (x = 46px) **pixel-perfectly ON the vertical line** (x = 46px).
    - Maintained clean clearance between time text (0-34px), node dot (41-51px), and subject card (78px+).
-3. **Restored Class Count & Weekend Subtitle**:
+4. **Restored Class Count & Weekend Subtitle**:
    - Retained the lecture count / weekend status meta line (`3 Classes Scheduled` / `Weekend · Upcoming Mon Schedule`) above the mobile timeline.
    - Removed the redundant day title text (`Monday`), relying cleanly on the active weekday tab button (`MON`, `TUE`, `WED`, `THU`, `FRI`).
-4. **Clean Bottom Margin for Mobile Timeline**:
+5. **Clean Bottom Margin for Mobile Timeline**:
    - Added `padding-bottom: 36px` to `.today-view-container` so the mobile timeline ends with a clean margin and never touches the bottom edge of the device screen.
    - Balanced card height to `72px` and row gap `10px` for optimal vertical proportions.
-5. **Generous Time Slot Label Spacing (15px Distance)**:
+6. **Generous Time Slot Label Spacing (15px Distance)**:
    - Updated `.timeline-container` `padding-left: 66px` and time label text (`width: 34px`), creating **15px of clear, generous space** between time text (e.g. `8-9`, `9-10`) and the timeline dot.
    - Maintained exact node center alignment on the vertical line.
-6. **Compact Single-Screen Sidebar Drawer (No Scrolling)**:
+7. **Compact Single-Screen Sidebar Drawer (No Scrolling)**:
    - Compacted vertical padding (`16px 18px`), group gaps (`12px`), title margins (`5px`), and button padding (`6px 8px`), allowing the entire sidebar panel to display at once without scrolling on desktop and mobile screens.
-7. **First-Time Visit Setup Validation & Lock**:
-   - On first visit (when no saved section or electives exist in `localStorage` or URL hash), the **Sidebar Drawer (`#drawerOverlay`)** opens automatically on page load.
+8. **First-Time Visit Setup Validation & Lock**:
+   - On first visit (when no saved section or electives exist in `localStorage`), the **Sidebar Drawer (`#drawerOverlay`)** opens automatically on page load.
    - **Validation Requirement**: The **Apply** button remains disabled (`opacity: 0.45`, `cursor: not-allowed`), and clean text warning (`Please select Section, Elective 1, and Elective 2 to apply.`) appears until the user selects **Section + Elective 1 + Elective 2**.
    - **Lock**: The sidebar cannot be closed until all 3 required choices are made and **Apply** is clicked.
-8. **Draft Preferences State & Apply Action in Sidebar**:
+9. **Draft Preferences State & Apply Action in Sidebar**:
    - On subsequent visits, preference changes in the sidebar are held in draft state.
    - Tapping options updates draft highlights without modifying the main timetable.
-   - **Clicking Apply** commits the draft preferences to active state, updates the timetable live, saves to `localStorage`, syncs URL hash, and closes the drawer.
+   - **Clicking Apply** commits the draft preferences to active state, updates the timetable live, saves to `localStorage`, and closes the drawer.
    - **Closing without Apply** discards draft changes and preserves the active timetable untouched.
-9. **Full Week Grid Vertical Height Expansion**:
-   - Increased slot cell height from `66px` to **`90px`** and header/cell padding to `14px 8px`, expanding the vertical presence of the full week grid table.
-10. **Dual-Layer Persistence (Fail-Proof Offline & Revisit)**:
-    - **`localStorage`**: Saves `tt_section`, `tt_el1`, `tt_el2`, `tt_theme` in browser memory on live site visits.
-    - **URL Hash Parameters Sync**: Automatically appends choices to the URL hash (e.g. `#sec=A&el1=ECN17254&el2=ECN17276&theme=dark`). This guarantees that if a user bookmarks the link or downloads the page, their exact timetable loads with **zero data re-entry required**!
+10. **Full Week Grid Vertical Height Expansion**:
+    - Increased slot cell height from `66px` to **`90px`** and header/cell padding to `14px 8px`, expanding the vertical presence of the full week grid table.
 11. **Favicon (Option 2B)**:
     - Modern Time Block Grid icon (`favicon.svg`) featuring a Violet-to-Coral-Orange gradient (`#8b5cf6` ➔ `#f97316`). Linked via file and SVG data URI fallback.
 12. **Ultra-Clean Header Bar & Glassmorphism Sidebar Drawer**:
@@ -94,5 +94,5 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
 - ✅ `timetable_data.md`: Complete.
 - ✅ `data.json`: Complete.
 - ✅ `favicon.svg`: Complete.
-- ✅ `index.html`: Fully updated with pixel-perfect timeline node alignment directly on the vertical line.
+- ✅ `index.html`: Fully updated with pure localStorage persistence and URL hash extensions removed.
 - ✅ `PROJECT_CONTEXT.md`: Fully updated.
