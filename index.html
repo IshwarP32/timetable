@@ -1294,9 +1294,13 @@
       const e2 = localStorage.getItem('tt_el2');
       const t = localStorage.getItem('tt_theme');
 
-      if (s) userSection = s;
-      if (e1) userEl1 = e1;
-      if (e2) userEl2 = e2;
+      const validSecs = ['A', 'B'];
+      const validG1 = getElectiveOptions(1).map(o => o.id);
+      const validG2 = getElectiveOptions(2).map(o => o.id);
+
+      if (s && validSecs.includes(s)) userSection = s;
+      if (e1 && validG1.includes(e1)) userEl1 = e1;
+      if (e2 && validG2.includes(e2)) userEl2 = e2;
       if (t) document.documentElement.setAttribute('data-theme', t);
 
       // Clean URL hash extension if present
@@ -1308,11 +1312,14 @@
       draftEl1 = userEl1;
       draftEl2 = userEl2;
 
-      // If first visit (no saved section or electives), auto open drawer and trigger validation
+      // If first visit or invalid config, auto open drawer and trigger validation
       if (!userSection || !userEl1 || !userEl2) {
         setTimeout(() => {
           const drawer = document.getElementById('drawerOverlay');
-          if (drawer) drawer.classList.add('active');
+          if (drawer) {
+            renderConfigWizardOptions();
+            drawer.classList.add('active');
+          }
           validateDrawerForm();
         }, 150);
       }
@@ -1650,6 +1657,7 @@
         draftSection = userSection;
         draftEl1 = userEl1;
         draftEl2 = userEl2;
+        renderConfigWizardOptions();
         syncSidebarOptionHighlights();
         validateDrawerForm();
       }
