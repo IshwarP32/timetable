@@ -13,7 +13,7 @@
   <!-- html2canvas for PNG Export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <!-- Timetable Data -->
-  <script src="data.js"></script>
+  <script src="data.js?v=20260727_2"></script>
 
   <style>
     *, *::before, *::after {
@@ -1243,6 +1243,9 @@
         <button class="submit-btn" id="drawerApplyBtn" onclick="applySidebarPreferences();">
           Apply
         </button>
+        <button class="drawer-btn" style="margin-top:6px;font-size:0.7rem;opacity:0.75;justify-content:center;" onclick="resetPreferences()">
+          Reset Preferences
+        </button>
       </div>
     </div>
   </div>
@@ -1331,6 +1334,22 @@
       localStorage.setItem('tt_el2', userEl2);
 
       renderApp();
+    }
+
+    function resetPreferences() {
+      localStorage.removeItem('tt_section');
+      localStorage.removeItem('tt_el1');
+      localStorage.removeItem('tt_el2');
+      userSection = null;
+      userEl1 = null;
+      userEl2 = null;
+      draftSection = null;
+      draftEl1 = null;
+      draftEl2 = null;
+      renderConfigWizardOptions();
+      validateDrawerForm();
+      const drawer = document.getElementById('drawerOverlay');
+      if (drawer) drawer.classList.add('active');
     }
 
     function getElectiveOptions(group) {
