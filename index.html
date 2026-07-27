@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- html2canvas for PNG Export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Timetable Data -->
+  <script src="data.js"></script>
 
   <style>
     *, *::before, *::after {
@@ -1208,85 +1210,6 @@
        APPLICATION LOGIC & DATA
   ══════════════════════════════════════ -->
   <script>
-    // Embedded Data Fallback (Works offline & without CORS)
-    const EMBEDDED_DATA = {
-      "subjects": {
-        "ECN17101": {
-          "name": "Mobile and Wireless Communication",
-          "short": "Mobile & Wireless Comm.",
-          "profA": "—",
-          "profB": "—",
-          "schedule": {
-            "mon": {
-              "2-3": { "loc": "SEW1", "sections": ["A"] },
-              "3-4": { "loc": "FN4", "sections": ["B"] }
-            },
-            "wed": {
-              "9-10": { "loc": "FE16", "sections": ["A"], "isTutorial": true },
-              "1-2": { "loc": "GS7", "sections": ["B"], "isTutorial": true }
-            },
-            "thu": {
-              "8-9": { "loc": "FEW15", "sections": ["B"] },
-              "10-11": { "loc": "SEW9", "sections": ["A"] }
-            },
-            "fri": {
-              "2-3": { "loc": "FE18", "sections": ["A"] }
-            }
-          }
-        },
-        "ECN17102": {
-          "name": "Nano Electronics and Its Applications",
-          "short": "Nano Elec",
-          "profA": "—",
-          "profB": "—",
-          "schedule": {
-            "mon": {
-              "11-12": { "loc": "Conference Hall", "sections": ["B"] }
-            },
-            "tue": {
-              "9-10": { "loc": "SEW10", "sections": ["B"] },
-              "3-4": { "loc": "SEW1", "sections": ["A"] }
-            },
-            "wed": {
-              "9-10": { "loc": "FEW1", "sections": ["B"] }
-            },
-            "thu": {
-              "8-9": { "loc": "SEW9", "sections": ["A"] }
-            },
-            "fri": {
-              "3-4": { "loc": "FE18", "sections": ["A"] }
-            }
-          }
-        },
-        "ECN17254": { "name": "Mixed Mode VLSI Design", "short": "Mixed Mode VLSI", "profA": "—", "profB": "—" },
-        "ECN17251": { "name": "Advanced Wireless Communication", "short": "Adv. Wireless Comm.", "profA": "—", "profB": "—" },
-        "ECN17256": { "name": "Memory Design and Testing", "short": "Memory Design", "profA": "—", "profB": "—" },
-        "ECN17276": { "name": "Electromagnetic Interference & Compatibility", "short": "EM Interference", "profA": "—", "profB": "—" },
-        "ECN17278": { "name": "Signal Compression Techniques", "short": "Signal Compression", "profA": "—", "profB": "—" },
-        "ECN17280": { "name": "Organic Electronics", "short": "Organic Elec", "profA": "—", "profB": "—" }
-      },
-      "electives": {
-        "group1": {
-          "label": "Elective 1",
-          "options": [
-            { "id": "ECN17254", "code": "ECN17254", "name": "Mixed Mode VLSI Design", "schedule": { "mon": { "8-9": { "loc": "LH2", "sections": ["A", "B"] } }, "wed": { "11-12": { "loc": "FE16", "sections": ["A", "B"] } }, "fri": { "8-9": { "loc": "LH2", "sections": ["A", "B"] } } } },
-            { "id": "ECN17251", "code": "ECN17251", "name": "Adv. Wireless Comm", "schedule": { "mon": { "10-11": { "loc": "SEW7", "sections": ["A", "B"] } }, "tue": { "8-9": { "loc": "SEW10", "sections": ["A", "B"] } }, "wed": { "8-9": { "loc": "FE16", "sections": ["A", "B"] } } } },
-            { "id": "ECN17256", "code": "ECN17256", "name": "Memory Design and Testing", "schedule": { "mon": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } }, "wed": { "8-9": { "loc": "FEW1", "sections": ["A", "B"] } }, "fri": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } } } }
-          ]
-        },
-        "group2": {
-          "label": "Elective 2",
-          "options": [
-            { "id": "ECN17276", "code": "ECN17276", "name": "EM interference & Compatibility", "schedule": { "tue": { "2-3": { "loc": "FE16", "sections": ["A", "B"] } }, "wed": { "10-11": { "loc": "FE16", "sections": ["A", "B"] } }, "fri": { "1-2": { "loc": "FE18", "sections": ["A", "B"] } } } },
-            { "id": "ECN17278", "code": "ECN17278", "name": "Signal Compression Techniques", "schedule": { "mon": { "3-4": { "loc": "SEW1", "sections": ["A", "B"] } }, "tue": { "1-2": { "loc": "FE16", "sections": ["A", "B"] } }, "thu": { "9-10": { "loc": "SEW9", "sections": ["A", "B"] } } } },
-            { "id": "ECN17280", "code": "ECN17280", "name": "Organic Electronics", "schedule": { "tue": { "2-3": { "loc": "SEW1", "sections": ["A", "B"] } }, "wed": { "10-11": { "loc": "FN1", "sections": ["A", "B"] } }, "thu": { "1-2": { "loc": "FE18", "sections": ["A", "B"] } } } }
-          ]
-        }
-      }
-    };
-
-    let APP_DATA = EMBEDDED_DATA;
-
     // State Variables (Active vs Draft)
     let userSection = null;
     let userEl1 = null;
@@ -1302,17 +1225,7 @@
     const TIME_SLOTS = ['8-9', '9-10', '10-11', '11-12', '12-1', '1-2', '2-3', '3-4'];
 
     // Initialize App
-    window.addEventListener('DOMContentLoaded', async () => {
-      // Try fetching external data.json
-      try {
-        const res = await fetch('data.json');
-        if (res.ok) {
-          APP_DATA = await res.json();
-        }
-      } catch (e) {
-        console.log('Using embedded fallback data');
-      }
-
+    window.addEventListener('DOMContentLoaded', () => {
       loadSavedConfig();
       initCurrentDay();
       renderConfigWizardOptions();

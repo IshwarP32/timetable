@@ -1,4 +1,4 @@
-{
+window.APP_DATA = {
   "subjects": {
     "ECN17101": {
       "name": "Mobile and Wireless Communication",
@@ -246,4 +246,4 @@
       ]
     }
   }
-}
+};

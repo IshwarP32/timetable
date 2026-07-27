@@ -84,7 +84,7 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
 
 ## 📁 Repository Files Structure
 - `timetable_data.md` — Source markdown file containing section timetables, elective schedules, and subject details. (Completed ✅)
-- `data.json` — Structured JSON data used directly by the frontend web app. (Completed ✅)
+- `data.js` — Single source of truth JavaScript timetable dataset loaded directly by index.html via `<script src="data.js"></script>`. (Completed ✅)
 - `favicon.svg` — Option 2B (Violet -> Coral Orange Time Block Grid) vector SVG favicon. (Completed ✅)
 - `index.html` — Single Page Application containing all UI, CSS, and JS logic (GitHub Pages ready). (Completed ✅)
 - `PROJECT_CONTEXT.md` — Active context documentation for AI agents. (Updated ✅)
@@ -105,7 +105,7 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
 
 ## 🚦 Current Progress Status
 - ✅ `timetable_data.md`: Complete.
-- ✅ `data.json`: Complete.
+- ✅ `data.js`: Complete.
 - ✅ `favicon.svg`: Complete.
 - ✅ `index.html`: Fully updated with tight flexbox layout inside grid cell content.
 - ✅ `PROJECT_CONTEXT.md`: Fully updated.
