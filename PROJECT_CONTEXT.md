@@ -76,6 +76,9 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
       - Professor Name per section
 21. **Export & Download (Full 5-Day Week PNG)**:
     - **Download**: Clicking "Download" on mobile or desktop generates a high-resolution, full 5-day week grid PNG screenshot (`Timetable_SecX_FullWeek.png`) via an off-screen desktop renderer.
+22. **Persistent Subject-Wise Timetable Schema**:
+    - Replaced redundant top-level `"sections"` dictionary in `data.json` with a **Subject-Wise Schedule Schema** (`"schedule"` object directly under each subject in `"subjects"`).
+    - Slots specify location (`loc`), target sections array (`sections: ["A"]`, `["B"]`, or `["A", "B"]`), and optional `isTutorial: true` flag, allowing easy subject-level timetable management.
 
 ---
 

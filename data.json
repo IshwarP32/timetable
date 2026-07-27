@@ -4,13 +4,48 @@
       "name": "Mobile and Wireless Communication",
       "short": "Mobile & Wireless Comm.",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "schedule": {
+        "mon": {
+          "2-3": { "loc": "SEW1", "sections": ["A"] },
+          "3-4": { "loc": "FN4", "sections": ["B"] }
+        },
+        "wed": {
+          "9-10": { "loc": "FE16", "sections": ["A"], "isTutorial": true },
+          "1-2": { "loc": "GS7", "sections": ["B"], "isTutorial": true }
+        },
+        "thu": {
+          "8-9": { "loc": "FEW15", "sections": ["B"] },
+          "10-11": { "loc": "SEW9", "sections": ["A"] }
+        },
+        "fri": {
+          "2-3": { "loc": "FE18", "sections": ["A"] }
+        }
+      }
     },
     "ECN17102": {
       "name": "Nano Electronics and Its Applications",
       "short": "Nano Elec",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "schedule": {
+        "mon": {
+          "11-12": { "loc": "Conference Hall", "sections": ["B"] }
+        },
+        "tue": {
+          "9-10": { "loc": "SEW10", "sections": ["B"] },
+          "3-4": { "loc": "SEW1", "sections": ["A"] }
+        },
+        "wed": {
+          "9-10": { "loc": "FEW1", "sections": ["B"] }
+        },
+        "thu": {
+          "8-9": { "loc": "SEW9", "sections": ["A"] }
+        },
+        "fri": {
+          "3-4": { "loc": "FE18", "sections": ["A"] }
+        }
+      }
     },
     "ECN17254": {
       "name": "Mixed Mode VLSI Design",
@@ -49,103 +84,6 @@
       "profB": "—"
     }
   },
-  "sections": {
-    "A": {
-      "mon": {
-        "2-3": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "SEW1"
-        }
-      },
-      "tue": {
-        "3-4": {
-          "code": "ECN17102",
-          "name": "Nano Elec",
-          "loc": "SEW1"
-        }
-      },
-      "wed": {
-        "9-10": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "FE16",
-          "isTutorial": true
-        }
-      },
-      "thu": {
-        "8-9": {
-          "code": "ECN17102",
-          "name": "Nano Elec",
-          "loc": "SEW9"
-        },
-        "10-11": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "SEW9"
-        }
-      },
-      "fri": {
-        "2-3": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "FE18"
-        },
-        "3-4": {
-          "code": "ECN17102",
-          "name": "Nano Elec",
-          "loc": "FE18"
-        }
-      }
-    },
-    "B": {
-      "mon": {
-        "11-12": {
-          "code": "ECN17102",
-          "name": "Nano Elec",
-          "loc": "Conference Hall"
-        },
-        "3-4": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "FN4"
-        }
-      },
-      "tue": {
-        "9-10": {
-          "code": "ECN17102",
-          "name": "Nano Elec",
-          "loc": "SEW10"
-        },
-        "3-4": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "FE16"
-        }
-      },
-      "wed": {
-        "9-10": {
-          "code": "ECN17102",
-          "name": "Nano Elec",
-          "loc": "FEW1"
-        },
-        "1-2": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "GS7",
-          "isTutorial": true
-        }
-      },
-      "thu": {
-        "8-9": {
-          "code": "ECN17101",
-          "name": "Mobile & Wireless Comm.",
-          "loc": "FEW15"
-        }
-      },
-      "fri": {}
-    }
-  },
   "electives": {
     "group1": {
       "label": "Elective 1",
@@ -157,17 +95,20 @@
           "schedule": {
             "mon": {
               "8-9": {
-                "loc": "LH2"
+                "loc": "LH2",
+                "sections": ["A", "B"]
               }
             },
             "wed": {
               "11-12": {
-                "loc": "FE16"
+                "loc": "FE16",
+                "sections": ["A", "B"]
               }
             },
             "fri": {
               "8-9": {
-                "loc": "LH2"
+                "loc": "LH2",
+                "sections": ["A", "B"]
               }
             }
           }
@@ -179,17 +120,20 @@
           "schedule": {
             "mon": {
               "10-11": {
-                "loc": "SEW7"
+                "loc": "SEW7",
+                "sections": ["A", "B"]
               }
             },
             "tue": {
               "8-9": {
-                "loc": "SEW10"
+                "loc": "SEW10",
+                "sections": ["A", "B"]
               }
             },
             "wed": {
               "8-9": {
-                "loc": "FE16"
+                "loc": "FE16",
+                "sections": ["A", "B"]
               }
             }
           }
@@ -201,17 +145,20 @@
           "schedule": {
             "mon": {
               "9-10": {
-                "loc": "LH2"
+                "loc": "LH2",
+                "sections": ["A", "B"]
               }
             },
             "wed": {
               "8-9": {
-                "loc": "FEW1"
+                "loc": "FEW1",
+                "sections": ["A", "B"]
               }
             },
             "fri": {
               "9-10": {
-                "loc": "LH2"
+                "loc": "LH2",
+                "sections": ["A", "B"]
               }
             }
           }
@@ -228,17 +175,20 @@
           "schedule": {
             "tue": {
               "2-3": {
-                "loc": "FE16"
+                "loc": "FE16",
+                "sections": ["A", "B"]
               }
             },
             "wed": {
               "10-11": {
-                "loc": "FE16"
+                "loc": "FE16",
+                "sections": ["A", "B"]
               }
             },
             "fri": {
               "1-2": {
-                "loc": "FE18"
+                "loc": "FE18",
+                "sections": ["A", "B"]
               }
             }
           }
@@ -250,17 +200,20 @@
           "schedule": {
             "mon": {
               "3-4": {
-                "loc": "SEW1"
+                "loc": "SEW1",
+                "sections": ["A", "B"]
               }
             },
             "tue": {
               "1-2": {
-                "loc": "FE16"
+                "loc": "FE16",
+                "sections": ["A", "B"]
               }
             },
             "thu": {
               "9-10": {
-                "loc": "SEW9"
+                "loc": "SEW9",
+                "sections": ["A", "B"]
               }
             }
           }
@@ -272,17 +225,20 @@
           "schedule": {
             "tue": {
               "2-3": {
-                "loc": "SEW1"
+                "loc": "SEW1",
+                "sections": ["A", "B"]
               }
             },
             "wed": {
               "10-11": {
-                "loc": "FN1"
+                "loc": "FN1",
+                "sections": ["A", "B"]
               }
             },
             "thu": {
               "1-2": {
-                "loc": "FE18"
+                "loc": "FE18",
+                "sections": ["A", "B"]
               }
             }
           }
