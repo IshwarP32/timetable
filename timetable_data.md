@@ -47,8 +47,8 @@ Fill in your details below. The site will use this data.
 ### Monday
 | Time Slot | Subject | Location |
 |-----------|---------|----------|
-| 1 - 2     | Nano Elec | FN4 |
-| 2 - 3     | Mobile & Wireless Comm. | FN4 |
+| 11 - 12   | Nano Elec | Conference Hall |
+| 3 - 4     | Mobile & Wireless Comm. | FN4 |
 
 ### Tuesday
 | Time Slot | Subject | Location |
