@@ -1044,6 +1044,40 @@
       .week-view-container { display: block; }
       .view-switcher { display: none; }
     }
+
+    /* ══════════════════════════════════════
+       FOOTER STYLES
+    ══════════════════════════════════════ */
+    .app-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 0.75rem;
+      color: var(--text-2);
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-dot {
+      color: var(--text-3);
+      font-size: 0.6rem;
+    }
+
+    .footer-link {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+      color: #818cf8;
+    }
   </style>
 </head>
 <body>
@@ -1135,6 +1169,13 @@
         </table>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Updated: <strong id="lastUpdatedDate">—</strong></span>
+      <span class="footer-dot">•</span>
+      <span>Contact: <a href="mailto:ishwarpatil8767@gmail.com" class="footer-link">ishwarpatil8767@gmail.com</a></span>
+    </footer>
 
   </div>
 
@@ -1285,12 +1326,26 @@
       renderApp();
     }
 
+    function getElectiveOptions(group) {
+      if (!APP_DATA || !APP_DATA.subjects) return [];
+      return Object.keys(APP_DATA.subjects)
+        .filter(code => APP_DATA.subjects[code].isElective && APP_DATA.subjects[code].electiveGroup === group)
+        .map(code => ({
+          id: code,
+          code: code,
+          name: APP_DATA.subjects[code].short || APP_DATA.subjects[code].name
+        }));
+    }
+
     function renderConfigWizardOptions() {
       const g1 = document.getElementById('el1OptionsGrid');
       const g2 = document.getElementById('el2OptionsGrid');
 
+      const opts1 = getElectiveOptions(1);
+      const opts2 = getElectiveOptions(2);
+
       if (g1) {
-        g1.innerHTML = APP_DATA.electives.group1.options.map(opt => `
+        g1.innerHTML = opts1.map(opt => `
           <button class="opt-btn ${opt.id === draftEl1 ? 'selected' : ''}" id="btn_el1_${opt.id}" onclick="selectEl1('${opt.id}')">
             ${opt.name}
           </button>
@@ -1298,7 +1353,7 @@
       }
 
       if (g2) {
-        g2.innerHTML = APP_DATA.electives.group2.options.map(opt => `
+        g2.innerHTML = opts2.map(opt => `
           <button class="opt-btn ${opt.id === draftEl2 ? 'selected' : ''}" id="btn_el2_${opt.id}" onclick="selectEl2('${opt.id}')">
             ${opt.name}
           </button>
@@ -1314,12 +1369,12 @@
       if (a) a.classList.toggle('selected', draftSection === 'A');
       if (b) b.classList.toggle('selected', draftSection === 'B');
 
-      if (APP_DATA && APP_DATA.electives) {
-        APP_DATA.electives.group1.options.forEach(opt => {
+      if (APP_DATA && APP_DATA.subjects) {
+        getElectiveOptions(1).forEach(opt => {
           const btn = document.getElementById(`btn_el1_${opt.id}`);
           if (btn) btn.classList.toggle('selected', opt.id === draftEl1);
         });
-        APP_DATA.electives.group2.options.forEach(opt => {
+        getElectiveOptions(2).forEach(opt => {
           const btn = document.getElementById(`btn_el2_${opt.id}`);
           if (btn) btn.classList.toggle('selected', opt.id === draftEl2);
         });
@@ -1372,70 +1427,47 @@
     function buildUnifiedSchedule() {
       const merged = { mon: {}, tue: {}, wed: {}, thu: {}, fri: {} };
 
-      // 1. Add core subject schedules matching active userSection
-      if (APP_DATA.subjects) {
-        Object.keys(APP_DATA.subjects).forEach(code => {
-          const sub = APP_DATA.subjects[code];
-          if (sub && sub.schedule) {
-            DAYS.forEach(d => {
-              if (sub.schedule[d]) {
-                Object.keys(sub.schedule[d]).forEach(slot => {
-                  const slotConfig = sub.schedule[d][slot];
-                  const secs = slotConfig.sections || ['A', 'B'];
-                  if (secs.includes(userSection)) {
-                    merged[d][slot] = {
-                      code: code,
-                      name: sub.short || sub.name,
-                      loc: slotConfig.loc,
-                      isTutorial: Boolean(slotConfig.isTutorial)
-                    };
-                  }
-                });
+      if (!APP_DATA || !APP_DATA.subjects) return merged;
+
+      const selectedElectives = [userEl1, userEl2];
+
+      Object.keys(APP_DATA.subjects).forEach(code => {
+        const sub = APP_DATA.subjects[code];
+        if (!sub || !sub.schedule) return;
+
+        const isElec = Boolean(sub.isElective);
+        if (isElec && !selectedElectives.includes(code)) return;
+
+        DAYS.forEach(d => {
+          if (sub.schedule[d]) {
+            Object.keys(sub.schedule[d]).forEach(slot => {
+              const slotConfig = sub.schedule[d][slot];
+              const secs = slotConfig.sections || ['A', 'B'];
+
+              if (secs.includes(userSection) || isElec) {
+                merged[d][slot] = {
+                  code: code,
+                  name: sub.short || sub.name,
+                  loc: slotConfig.loc,
+                  isElective: isElec,
+                  isTutorial: Boolean(slotConfig.isTutorial)
+                };
               }
             });
           }
         });
-      }
-
-      // 2. Merge Elective 1 choice
-      const opt1 = APP_DATA.electives.group1.options.find(o => o.id === userEl1);
-      if (opt1 && opt1.schedule) {
-        DAYS.forEach(d => {
-          if (opt1.schedule[d]) {
-            Object.keys(opt1.schedule[d]).forEach(slot => {
-              merged[d][slot] = {
-                code: opt1.code,
-                name: opt1.name,
-                loc: opt1.schedule[d][slot].loc,
-                isElective: true
-              };
-            });
-          }
-        });
-      }
-
-      // 3. Merge Elective 2 choice
-      const opt2 = APP_DATA.electives.group2.options.find(o => o.id === userEl2);
-      if (opt2 && opt2.schedule) {
-        DAYS.forEach(d => {
-          if (opt2.schedule[d]) {
-            Object.keys(opt2.schedule[d]).forEach(slot => {
-              merged[d][slot] = {
-                code: opt2.code,
-                name: opt2.name,
-                loc: opt2.schedule[d][slot].loc,
-                isElective: true
-              };
-            });
-          }
-        });
-      }
+      });
 
       return merged;
     }
 
     // Main Render Function
     function renderApp() {
+      if (window.APP_DATA && window.APP_DATA.lastUpdated) {
+        const lastUpdatedEl = document.getElementById('lastUpdatedDate');
+        if (lastUpdatedEl) lastUpdatedEl.innerText = window.APP_DATA.lastUpdated;
+      }
+
       if (!userSection || !userEl1 || !userEl2) {
         return; // Wait until preferences are applied on first visit
       }
@@ -1653,10 +1685,7 @@
     // Subject Modal Logic
     function openSubjectModal(code, loc) {
       const sub = APP_DATA.subjects[code] || { name: code, profA: '—', profB: '—' };
-      
-      const isEl1 = APP_DATA.electives && APP_DATA.electives.group1 ? APP_DATA.electives.group1.options.some(o => o.code === code || o.id === code) : false;
-      const isEl2 = APP_DATA.electives && APP_DATA.electives.group2 ? APP_DATA.electives.group2.options.some(o => o.code === code || o.id === code) : false;
-      const isElective = isEl1 || isEl2;
+      const isElective = Boolean(sub.isElective);
 
       const sectionText = isElective ? 'Section A & B' : `Section ${userSection}`;
       let prof = '—';

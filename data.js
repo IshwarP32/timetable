@@ -1,4 +1,5 @@
 window.APP_DATA = {
+  "lastUpdated": "27 July 2026",
   "subjects": {
     "ECN17101": {
       "name": "Mobile and Wireless Communication",
@@ -51,199 +52,79 @@ window.APP_DATA = {
       "name": "Mixed Mode VLSI Design",
       "short": "Mixed Mode VLSI",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "isElective": true,
+      "electiveGroup": 1,
+      "schedule": {
+        "mon": { "8-9": { "loc": "LH2", "sections": ["A", "B"] } },
+        "wed": { "11-12": { "loc": "FE16", "sections": ["A", "B"] } },
+        "fri": { "8-9": { "loc": "LH2", "sections": ["A", "B"] } }
+      }
     },
     "ECN17251": {
       "name": "Advanced Wireless Communication",
       "short": "Adv. Wireless Comm.",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "isElective": true,
+      "electiveGroup": 1,
+      "schedule": {
+        "mon": { "10-11": { "loc": "SEW7", "sections": ["A", "B"] } },
+        "tue": { "8-9": { "loc": "SEW10", "sections": ["A", "B"] } },
+        "wed": { "8-9": { "loc": "FE16", "sections": ["A", "B"] } }
+      }
     },
     "ECN17256": {
       "name": "Memory Design and Testing",
       "short": "Memory Design",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "isElective": true,
+      "electiveGroup": 1,
+      "schedule": {
+        "mon": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } },
+        "wed": { "8-9": { "loc": "FEW1", "sections": ["A", "B"] } },
+        "fri": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } }
+      }
     },
     "ECN17276": {
       "name": "Electromagnetic Interference & Compatibility",
       "short": "EM Interference",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "isElective": true,
+      "electiveGroup": 2,
+      "schedule": {
+        "tue": { "2-3": { "loc": "FE16", "sections": ["A", "B"] } },
+        "wed": { "10-11": { "loc": "FE16", "sections": ["A", "B"] } },
+        "fri": { "1-2": { "loc": "FE18", "sections": ["A", "B"] } }
+      }
     },
     "ECN17278": {
       "name": "Signal Compression Techniques",
       "short": "Signal Compression",
       "profA": "—",
-      "profB": "—"
+      "profB": "—",
+      "isElective": true,
+      "electiveGroup": 2,
+      "schedule": {
+        "mon": { "3-4": { "loc": "SEW1", "sections": ["A", "B"] } },
+        "tue": { "1-2": { "loc": "FE16", "sections": ["A", "B"] } },
+        "thu": { "9-10": { "loc": "SEW9", "sections": ["A", "B"] } }
+      }
     },
     "ECN17280": {
       "name": "Organic Electronics",
       "short": "Organic Elec",
       "profA": "—",
-      "profB": "—"
-    }
-  },
-  "electives": {
-    "group1": {
-      "label": "Elective 1",
-      "options": [
-        {
-          "id": "ECN17254",
-          "code": "ECN17254",
-          "name": "Mixed Mode VLSI Design",
-          "schedule": {
-            "mon": {
-              "8-9": {
-                "loc": "LH2",
-                "sections": ["A", "B"]
-              }
-            },
-            "wed": {
-              "11-12": {
-                "loc": "FE16",
-                "sections": ["A", "B"]
-              }
-            },
-            "fri": {
-              "8-9": {
-                "loc": "LH2",
-                "sections": ["A", "B"]
-              }
-            }
-          }
-        },
-        {
-          "id": "ECN17251",
-          "code": "ECN17251",
-          "name": "Adv. Wireless Comm",
-          "schedule": {
-            "mon": {
-              "10-11": {
-                "loc": "SEW7",
-                "sections": ["A", "B"]
-              }
-            },
-            "tue": {
-              "8-9": {
-                "loc": "SEW10",
-                "sections": ["A", "B"]
-              }
-            },
-            "wed": {
-              "8-9": {
-                "loc": "FE16",
-                "sections": ["A", "B"]
-              }
-            }
-          }
-        },
-        {
-          "id": "ECN17256",
-          "code": "ECN17256",
-          "name": "Memory Design and Testing",
-          "schedule": {
-            "mon": {
-              "9-10": {
-                "loc": "LH2",
-                "sections": ["A", "B"]
-              }
-            },
-            "wed": {
-              "8-9": {
-                "loc": "FEW1",
-                "sections": ["A", "B"]
-              }
-            },
-            "fri": {
-              "9-10": {
-                "loc": "LH2",
-                "sections": ["A", "B"]
-              }
-            }
-          }
-        }
-      ]
-    },
-    "group2": {
-      "label": "Elective 2",
-      "options": [
-        {
-          "id": "ECN17276",
-          "code": "ECN17276",
-          "name": "EM interference & Compatibility",
-          "schedule": {
-            "tue": {
-              "2-3": {
-                "loc": "FE16",
-                "sections": ["A", "B"]
-              }
-            },
-            "wed": {
-              "10-11": {
-                "loc": "FE16",
-                "sections": ["A", "B"]
-              }
-            },
-            "fri": {
-              "1-2": {
-                "loc": "FE18",
-                "sections": ["A", "B"]
-              }
-            }
-          }
-        },
-        {
-          "id": "ECN17278",
-          "code": "ECN17278",
-          "name": "Signal Compression Techniques",
-          "schedule": {
-            "mon": {
-              "3-4": {
-                "loc": "SEW1",
-                "sections": ["A", "B"]
-              }
-            },
-            "tue": {
-              "1-2": {
-                "loc": "FE16",
-                "sections": ["A", "B"]
-              }
-            },
-            "thu": {
-              "9-10": {
-                "loc": "SEW9",
-                "sections": ["A", "B"]
-              }
-            }
-          }
-        },
-        {
-          "id": "ECN17280",
-          "code": "ECN17280",
-          "name": "Organic Electronics",
-          "schedule": {
-            "tue": {
-              "2-3": {
-                "loc": "SEW1",
-                "sections": ["A", "B"]
-              }
-            },
-            "wed": {
-              "10-11": {
-                "loc": "FN1",
-                "sections": ["A", "B"]
-              }
-            },
-            "thu": {
-              "1-2": {
-                "loc": "FE18",
-                "sections": ["A", "B"]
-              }
-            }
-          }
-        }
-      ]
+      "profB": "—",
+      "isElective": true,
+      "electiveGroup": 2,
+      "schedule": {
+        "tue": { "2-3": { "loc": "SEW1", "sections": ["A", "B"] } },
+        "wed": { "10-11": { "loc": "FN1", "sections": ["A", "B"] } },
+        "thu": { "1-2": { "loc": "FE18", "sections": ["A", "B"] } }
+      }
     }
   }
 };
