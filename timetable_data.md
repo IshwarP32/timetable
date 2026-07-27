@@ -59,13 +59,13 @@ Fill in your details below. The site will use this data.
 ### Wednesday
 | Time Slot | Subject | Location |
 |-----------|---------|----------|
-| 9 - 10    | Nano Elec (T) | FEW1 |
-| 1 - 2     | Mobile & Wireless Comm. | GS7 |
+| 9 - 10    | Nano Elec | FEW1 |
+| 1 - 2     | Mobile & Wireless Comm. (T) | GS7 |
 
 ### Thursday
 | Time Slot | Subject | Location |
 |-----------|---------|----------|
-| 8 - 9     | Mobile & Wireless Comm. (T) | FEW15 |
+| 8 - 9     | Mobile & Wireless Comm. | FEW15 |
 
 ### Friday
 | Time Slot | Subject | Location |

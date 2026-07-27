@@ -127,21 +127,20 @@
         "9-10": {
           "code": "ECN17102",
           "name": "Nano Elec",
-          "loc": "FEW1",
-          "isTutorial": true
+          "loc": "FEW1"
         },
         "1-2": {
           "code": "ECN17101",
           "name": "Mobile & Wireless Comm.",
-          "loc": "GS7"
+          "loc": "GS7",
+          "isTutorial": true
         }
       },
       "thu": {
         "8-9": {
           "code": "ECN17101",
           "name": "Mobile & Wireless Comm.",
-          "loc": "FEW15",
-          "isTutorial": true
+          "loc": "FEW15"
         }
       },
       "fri": {}
