@@ -11,6 +11,9 @@ window.APP_DATA = {
           "2-3": { "loc": "SEW1", "tempLoc": "GS5", "sections": ["A"] },
           "3-4": { "loc": "FN4", "sections": ["B"] }
         },
+        "tue": {
+          "3-4": { "loc": "FE16", "sections": ["B"] }
+        },
         "wed": {
           "9-10": { "loc": "FE16", "sections": ["A"], "isTutorial": true },
           "1-2": { "loc": "GS7", "sections": ["B"], "isTutorial": true }
