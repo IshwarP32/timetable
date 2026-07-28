@@ -460,6 +460,13 @@
       flex-shrink: 0;
     }
 
+    /* Temporary Classroom Location Styles */
+    .old-loc-strike {
+      text-decoration: line-through;
+      opacity: 0.55;
+      margin-right: 3px;
+    }
+
     .timeline-card-footer {
       display: flex;
       align-items: center;
@@ -1449,6 +1456,14 @@
       validateDrawerForm();
     }
 
+    // Helper for Location Display (Strikethrough Old Location if Temporary Location Exists)
+    function formatLocationHTML(loc, tempLoc) {
+      if (tempLoc) {
+        return `📍 <s class="old-loc-strike">${loc}</s> ${tempLoc}`;
+      }
+      return `📍 ${loc}`;
+    }
+
     // Schedule Merging Engine
     function buildUnifiedSchedule() {
       const merged = { mon: {}, tue: {}, wed: {}, thu: {}, fri: {} };
@@ -1475,6 +1490,7 @@
                   code: code,
                   name: sub.short || sub.name,
                   loc: slotConfig.loc,
+                  tempLoc: slotConfig.tempLoc || null,
                   isElective: isElec,
                   isTutorial: Boolean(slotConfig.isTutorial)
                 };
@@ -1559,14 +1575,15 @@
           const isElec = slotData.isElective;
           const subjClr = `var(--clr-${slotData.code.toLowerCase()}, #6366f1)`;
 
+          const tempLocArg = slotData.tempLoc ? `'${slotData.tempLoc}'` : 'null';
           container.innerHTML += `
             <div class="timeline-row">
               <div class="timeline-time-label">${displayTime}</div>
               <div class="timeline-node" style="background:${isTut ? 'var(--tutorial-text)' : subjClr};border-color:${subjClr};box-shadow:0 0 8px ${subjClr}"></div>
-              <div class="timeline-card-base timeline-card ${isTut ? 'is-tutorial' : ''}" style="border-left:3.5px solid ${isTut ? 'var(--tutorial-border)' : subjClr}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}')">
+              <div class="timeline-card-base timeline-card ${isTut ? 'is-tutorial' : ''}" style="border-left:3.5px solid ${isTut ? 'var(--tutorial-border)' : subjClr}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}', ${tempLocArg})">
                 <div class="timeline-card-header">
                   <div class="timeline-subj-name">${slotData.name}</div>
-                  <div class="timeline-subj-loc" style="color:${subjClr}">📍 ${slotData.loc}</div>
+                  <div class="timeline-subj-loc" style="color:${subjClr}">${formatLocationHTML(slotData.loc, slotData.tempLoc)}</div>
                 </div>
                 <div class="timeline-card-footer">
                   <span class="code-pill">${slotData.code}</span>
@@ -1632,13 +1649,14 @@
           if (slotData) {
             const isTut = slotData.isTutorial;
             const isElec = slotData.isElective;
+            const tempLocArg = slotData.tempLoc ? `'${slotData.tempLoc}'` : 'null';
             rowHtml += `
-              <td class="cell-${slotData.code} ${isTut ? 'cell-tutorial' : ''}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}')">
+              <td class="cell-${slotData.code} ${isTut ? 'cell-tutorial' : ''}" onclick="openSubjectModal('${slotData.code}', '${slotData.loc}', ${tempLocArg})">
                 <div class="grid-cell-content">
                   <div class="grid-subject-name">${slotData.name}</div>
                   ${isElec ? '<span class="grid-elec-tag">Elective</span>' : ''}
                   ${isTut ? '<span class="grid-tut-tag">Tutorial</span>' : ''}
-                  <div class="grid-subject-loc">📍 ${slotData.loc}</div>
+                  <div class="grid-subject-loc">${formatLocationHTML(slotData.loc, slotData.tempLoc)}</div>
                 </div>
               </td>
             `;
@@ -1710,7 +1728,7 @@
     }
 
     // Subject Modal Logic
-    function openSubjectModal(code, loc) {
+    function openSubjectModal(code, loc, tempLoc) {
       const sub = APP_DATA.subjects[code] || { name: code, profA: '—', profB: '—' };
       const isElective = Boolean(sub.isElective);
 
@@ -1734,7 +1752,7 @@
         </div>
         <div class="info-row">
           <span class="info-key">Location / Room</span>
-          <span class="info-val">📍 ${loc}</span>
+          <span class="info-val">${formatLocationHTML(loc, tempLoc)}</span>
         </div>
         <div class="info-row">
           <span class="info-key">Section</span>

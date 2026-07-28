@@ -8,7 +8,7 @@ window.APP_DATA = {
       "profB": "—",
       "schedule": {
         "mon": {
-          "2-3": { "loc": "SEW1", "sections": ["A"] },
+          "2-3": { "loc": "SEW1", "tempLoc": "GS5", "sections": ["A"] },
           "3-4": { "loc": "FN4", "sections": ["B"] }
         },
         "wed": {
@@ -17,7 +17,7 @@ window.APP_DATA = {
         },
         "thu": {
           "8-9": { "loc": "FEW15", "sections": ["B"] },
-          "10-11": { "loc": "SEW9", "sections": ["A"] }
+          "10-11": { "loc": "SEW9", "tempLoc": "GS5", "sections": ["A"] }
         },
         "fri": {
           "2-3": { "loc": "FE18", "sections": ["A"] }
@@ -34,14 +34,14 @@ window.APP_DATA = {
           "11-12": { "loc": "Conference Hall", "sections": ["B"] }
         },
         "tue": {
-          "9-10": { "loc": "SEW10", "sections": ["B"] },
-          "3-4": { "loc": "SEW1", "sections": ["A"] }
+          "9-10": { "loc": "SEW10", "tempLoc": "FEW15", "sections": ["B"] },
+          "3-4": { "loc": "SEW1", "tempLoc": "GS5", "sections": ["A"] }
         },
         "wed": {
           "9-10": { "loc": "FEW1", "sections": ["B"] }
         },
         "thu": {
-          "8-9": { "loc": "SEW9", "sections": ["A"] }
+          "8-9": { "loc": "SEW9", "tempLoc": "LH4", "sections": ["A"] }
         },
         "fri": {
           "3-4": { "loc": "FE18", "sections": ["A"] }
@@ -69,8 +69,8 @@ window.APP_DATA = {
       "isElective": true,
       "electiveGroup": 1,
       "schedule": {
-        "mon": { "10-11": { "loc": "SEW7", "sections": ["A", "B"] } },
-        "tue": { "8-9": { "loc": "SEW10", "sections": ["A", "B"] } },
+        "mon": { "10-11": { "loc": "SEW7", "tempLoc": "GS3", "sections": ["A", "B"] } },
+        "tue": { "8-9": { "loc": "SEW10", "tempLoc": "FE18", "sections": ["A", "B"] } },
         "wed": { "8-9": { "loc": "FE16", "sections": ["A", "B"] } }
       }
     },
@@ -108,9 +108,9 @@ window.APP_DATA = {
       "isElective": true,
       "electiveGroup": 2,
       "schedule": {
-        "mon": { "3-4": { "loc": "SEW1", "sections": ["A", "B"] } },
+        "mon": { "3-4": { "loc": "SEW1", "tempLoc": "GS5", "sections": ["A", "B"] } },
         "tue": { "1-2": { "loc": "FE16", "sections": ["A", "B"] } },
-        "thu": { "9-10": { "loc": "SEW9", "sections": ["A", "B"] } }
+        "thu": { "9-10": { "loc": "SEW9", "tempLoc": "GS5", "sections": ["A", "B"] } }
       }
     },
     "ECN17280": {
@@ -121,7 +121,7 @@ window.APP_DATA = {
       "isElective": true,
       "electiveGroup": 2,
       "schedule": {
-        "tue": { "2-3": { "loc": "SEW1", "sections": ["A", "B"] } },
+        "tue": { "2-3": { "loc": "SEW1", "tempLoc": "GS5", "sections": ["A", "B"] } },
         "wed": { "10-11": { "loc": "FN1", "sections": ["A", "B"] } },
         "thu": { "1-2": { "loc": "FE18", "sections": ["A", "B"] } }
       }

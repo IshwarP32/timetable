@@ -76,9 +76,10 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
       - Professor Name per section
 21. **Export & Download (Full 5-Day Week PNG)**:
     - **Download**: Clicking "Download" on mobile or desktop generates a high-resolution, full 5-day week grid PNG screenshot (`Timetable_SecX_FullWeek.png`) via an off-screen desktop renderer.
-22. **Persistent Subject-Wise Timetable Schema**:
-    - Replaced redundant top-level `"sections"` dictionary in `data.json` with a **Subject-Wise Schedule Schema** (`"schedule"` object directly under each subject in `"subjects"`).
-    - Slots specify location (`loc`), target sections array (`sections: ["A"]`, `["B"]`, or `["A", "B"]`), and optional `isTutorial: true` flag, allowing easy subject-level timetable management.
+23. **Temporary Classroom Location Changes**:
+    - Supports temporary room changes defined in `data.js` via `tempLoc`.
+    - Automatically displays the old classroom location with strikethrough styling (`<s>SEW1</s>`), followed by the new temporary location (`FE16`) highlighted with an amber accent badge in Mobile Timeline, Full Week Grid, and Subject Details popup.
+    - Finalizing changes is done simply by updating `"loc"` and removing `"tempLoc"` in `data.js`.
 
 ---
 
@@ -105,7 +106,7 @@ An interactive, mobile-first and desktop-optimized static Web Application for un
 
 ## 🚦 Current Progress Status
 - ✅ `timetable_data.md`: Complete.
-- ✅ `data.js`: Complete.
+- ✅ `data.js`: Updated with temporary location `tempLoc` support.
 - ✅ `favicon.svg`: Complete.
-- ✅ `index.html`: Fully updated with tight flexbox layout inside grid cell content.
+- ✅ `index.html`: Fully updated with strikethrough location formatting.
 - ✅ `PROJECT_CONTEXT.md`: Fully updated.
