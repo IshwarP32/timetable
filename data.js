@@ -9,7 +9,7 @@ window.APP_DATA = {
       "schedule": {
         "mon": {
           "2-3": { "loc": "SEW1", "tempLoc": "GS5", "sections": ["A"] },
-          "3-4": { "loc": "FN4", "sections": ["B"] }
+          "2-3": { "loc": "FN4", "sections": ["B"] }
         },
         "tue": {
           "3-4": { "loc": "FE16", "sections": ["B"] }
@@ -67,8 +67,8 @@ window.APP_DATA = {
     "ECN17251": {
       "name": "Advanced Wireless Communication",
       "short": "Adv. Wireless Comm.",
-      "profA": "—",
-      "profB": "—",
+      "profA": "Sandeep Singh",
+      "profB": "Sandeep Singh",
       "isElective": true,
       "electiveGroup": 1,
       "schedule": {
