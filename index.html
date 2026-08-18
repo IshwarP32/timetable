@@ -1043,6 +1043,45 @@
       color: #6366f1;
     }
 
+    .ref-modal-overlay {
+      z-index: 1200;
+    }
+
+    .ref-modal-card {
+      max-width: 980px;
+      width: min(980px, 95vw);
+      max-height: 90vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ref-image-wrap {
+      width: 100%;
+      max-height: calc(90vh - 88px);
+      overflow: auto;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      background: var(--bg-glass);
+      padding: 10px;
+    }
+
+    .ref-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .ref-empty {
+      font-size: 0.78rem;
+      color: var(--text-2);
+      text-align: center;
+      padding: 20px 12px;
+      line-height: 1.45;
+    }
+
     /* ══════════════════════════════════════
        RESPONSIVE BREAKPOINTS
     ══════════════════════════════════════ */
@@ -1168,6 +1207,7 @@
               <th>1 – 2</th>
               <th>2 – 3</th>
               <th>3 – 4</th>
+              <th>4 – 5</th>
             </tr>
           </thead>
           <tbody id="gridTbody">
@@ -1215,6 +1255,9 @@
         <button class="drawer-btn" id="drawerTabWeek" onclick="switchView('week'); closeSidebarDrawer();">
           <span>Full Week Grid</span>
         </button>
+        <button class="drawer-btn" onclick="openReferenceTimetable()">
+          <span>Original Reference Timetable</span>
+        </button>
       </div>
 
       <div class="drawer-nav-group">
@@ -1257,6 +1300,19 @@
     </div>
   </div>
 
+  <!-- Reference Timetable Modal -->
+  <div class="modal-overlay ref-modal-overlay" id="referenceModal" onclick="closeReferenceTimetable()">
+    <div class="modal-card ref-modal-card" onclick="event.stopPropagation()">
+      <div class="modal-title" style="margin-bottom:0;">
+        <span>Original Reference Timetable</span>
+        <button class="close-btn" onclick="closeReferenceTimetable()">✕</button>
+      </div>
+      <div class="ref-image-wrap" id="referenceImageWrap">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- ══════════════════════════════════════
        APPLICATION LOGIC & DATA
   ══════════════════════════════════════ -->
@@ -1273,7 +1329,7 @@
     let currentDayIndex = 0; // 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri
     const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri'];
     const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-    const TIME_SLOTS = ['8-9', '9-10', '10-11', '11-12', '12-1', '1-2', '2-3', '3-4'];
+    const TIME_SLOTS = ['8-9', '9-10', '10-11', '11-12', '12-1', '1-2', '2-3', '3-4', '4-5'];
 
     // Initialize App
     window.addEventListener('DOMContentLoaded', () => {
@@ -1769,6 +1825,37 @@
 
     function closeSubjectModal() {
       document.getElementById('subjectModal').classList.remove('active');
+    }
+
+    // Reference Timetable Modal Logic
+    function getReferenceImageSrc() {
+      if (!window.APP_DATA || !window.APP_DATA.referenceTimetableImage) return '';
+      const raw = String(window.APP_DATA.referenceTimetableImage).trim();
+      if (!raw) return '';
+      if (raw.startsWith('data:image/')) return raw;
+      return `data:image/png;base64,${raw}`;
+    }
+
+    function openReferenceTimetable() {
+      const wrap = document.getElementById('referenceImageWrap');
+      const imgSrc = getReferenceImageSrc();
+
+      if (!imgSrc) {
+        wrap.innerHTML = `
+          <div class="ref-empty">
+            Reference image not set.<br>
+            Add your base64 string in <strong>data.js</strong> at <strong>APP_DATA.referenceTimetableImage</strong>.
+          </div>
+        `;
+      } else {
+        wrap.innerHTML = `<img class="ref-image" src="${imgSrc}" alt="Original reference timetable">`;
+      }
+
+      document.getElementById('referenceModal').classList.add('active');
+    }
+
+    function closeReferenceTimetable() {
+      document.getElementById('referenceModal').classList.remove('active');
     }
 
     // SVG Theme Toggle Icons Engine
