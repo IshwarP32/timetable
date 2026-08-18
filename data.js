@@ -85,9 +85,11 @@ window.APP_DATA = {
       "isElective": true,
       "electiveGroup": 1,
       "schedule": {
-        "mon": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } },
+        // "mon": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } },
+        "tue": { "4-5": { "loc": "GW12", "sections": ["A", "B"] } },
         "wed": { "8-9": { "loc": "FEW1", "sections": ["A", "B"] } },
-        "fri": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } }
+        // "fri": { "9-10": { "loc": "LH2", "sections": ["A", "B"] } }
+        "fri": { "4-5": { "loc": "GW12", "sections": ["A", "B"] } },
       }
     },
     "ECN17276": {
